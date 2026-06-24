@@ -1,0 +1,18 @@
+
+=== BREAKAGE / SURPRISE LOG (auto-filled; edit/add by hand) ===
+- Model / tier: Qwen/Qwen2.5-3B | 3B-midscale | quantized=False
+- Token-match convergence (Cell 8): |Δtok| mean 0.00 (38/38-style exact match is ideal);
+    |Δsurprisal| mean 0.76. Note: a small paired-t p<0.05 on surprisal means controls run
+    slightly rarer than attested -> a CONSERVATIVE confound (works against H1, not for it).
+- Cohorts: all built. (Flag here if any cohort failed.)
+- H1 separability: latin peak 0.887 @ layer 7,
+    greek peak 0.920 @ layer 5.
+    Surprisal-only: latin 0.506, greek 0.534
+    -> Falsifier#4 SURVIVED (rep-probe >> surprisal).
+- Layer where signal peaks: H1 peaks EARLY (~layer 2), not at the old 0.7N default (25).
+    The original single-layer name-likeness was likely read at the wrong (decayed) layer.
+- H2 name-likeness peak layer (post-hoc selected): {'latin': 1, 'greek': 8}
+- Surprise: Latin vs Greek name-likeness DIVERGE -- examine the sweep table/plot above, not one layer.
+- Off-spec improvisations: surprisal used as token-rarity proxy (no external freq table); Greek script is
+    algorithmic Betz->Greek transliteration; corpus curated from PGM knowledge (see Digital Ambler sources
+    for provenance tightening), not parsed from a verified Betz edition.

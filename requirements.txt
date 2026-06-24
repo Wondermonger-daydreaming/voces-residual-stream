@@ -1,0 +1,9 @@
+# CPU-only (data + figures): the decisive numbers reproduce without a GPU
+numpy
+scipy
+scikit-learn
+matplotlib
+
+# Full extraction pipeline (GPU notebook only — install in Colab):
+#   torch, transformers, accelerate, bitsandbytes
+# make_data.py needs no third-party deps (Python stdlib only).
