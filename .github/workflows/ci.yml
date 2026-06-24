@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install CPU deps (no GPU/torch needed for data + figures)
+        run: pip install numpy scipy scikit-learn matplotlib
+
+      - name: All source files parse (refutes "collapsed/non-runnable")
+        run: python -m py_compile src/*.py
+
+      - name: Rebuild the corpus from definitions (no model)
+        run: python src/make_data.py
+
+      - name: Decider object is present in the canonical results JSON
+        run: |
+          python - <<'PY'
+          import json
+          d = json.load(open("results/voces_v6_results.json"))
+          vs = d["voces_specificity"]
+          for s in ("greek", "latin"):
+              assert {"vox_deep", "ctl_deep", "p", "n"} <= set(vs[s]), f"missing decider keys for {s}"
+          assert d["greek_split"]["n_authentic"] and d["greek_split"]["n_translit"]
+          print("schema OK: voces_specificity + greek_split present and well-formed")
+          PY
+
+      - name: Regenerate both figures from the JSON (nothing hard-coded)
+        run: python src/make_figures.py

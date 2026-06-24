@@ -5,6 +5,11 @@
 - **Seed:** 0  ·  **Report layer:** 7  ·  **n_voces:** 76 (17 theonym-bearing)
 - A companion run on Qwen2.5-7B (4-bit) gave the same H1 result and H2 *shape*; the de-quantized 3B run is reported because it removes the quantization caveat from the headline.
 
+## Canonical results & the decider object
+- **`results/voces_v6_results.json`** is canonical and is what `src/make_figures.py` reads. It is the seed-0 run above plus the `voces_specificity` object — the deep-layer voces-vs-token-matched-controls means and p-values that are the paper's decider.
+- The decider was computed by the v6 notebook's Cell 10f (`voces > controls`, deep layers) on the **same seed-0 activations** as the rest of the JSON. `voces_v5_results.json` is the identical run *before* that object was serialized — kept so the diff shows the decider was **added, not changed**.
+- Reported decider values (displayed precision): Greek voces +0.027 vs controls +0.020, *p* = 0.224, n = 49; Latin +0.004 vs +0.010, *p* = 0.886, n = 49. Running the v6 notebook end-to-end regenerates this object at full precision (seed 0 → identical). **No figure value is hand-entered** — `make_figures.py` reads them all from the JSON, and CI fails if the `voces_specificity` object is missing.
+
 ## Match quality (the load-bearing control)
 - **Token count:** exact — mean |Δtokens| = 0.00, 76/76 exact-count matches. The tokenization confound is closed.
 - **Surprisal (rarity proxy):** per-pair |Δsurprisal| = 0.76 nats; controls run *slightly rarer* than targets, so the residual gap is a **conservative** confound (works against H1, not for it).
