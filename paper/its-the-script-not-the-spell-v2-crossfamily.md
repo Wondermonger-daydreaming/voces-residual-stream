@@ -40,11 +40,12 @@ Qwen (9.63, +0.016) > Gemma (7.69, ~0.000) — a monotone relationship precision
 co-varies with family and vocab (n=3). **(4) A matched-cohort factorial (Mistral, replicated on Gemma) decomposes the deep effect
 into two co-equal drivers and a null.** Holding Greek-token fragmentation fixed at ~11 tokens, with bootstrap
 95% CIs: *fragmentation* drives it (asemic Greek at 11 tokens persists deep, +0.073; at 5 tokens it does not,
-−0.005; Δ=+0.078, CI excludes 0); *novelty/unfamiliarity* drives it just as strongly (asemic Greek persists,
-+0.073, but *familiar real-word* Greek at the same fragmentation does not, −0.003; Δ=+0.076 — a bundle of
-meaninglessness, low frequency, and tokenization-quality we do not yet separate, §5); and *namehood* is
-**absent — indeed reversed**: the actual voces persist deep *significantly less* than fragmentation-matched
-random asemic strings (Δ=−0.033, CI [−0.057, −0.010]).
+−0.005; Δ=+0.078, CI excludes 0); *meaninglessness* drives it just as strongly (asemic Greek persists, +0.073,
+but real-word Greek at the same fragmentation does not, −0.003; Δ=+0.076); and *namehood* is **absent — indeed
+reversed**: the actual voces persist deep *significantly less* than fragmentation-matched random asemic strings
+(Δ=−0.033, CI [−0.057, −0.010]). The whole structure **replicates on Gemma-2-9B**, and a follow-up factorial
+(v3) that splits meaning from frequency via the model's own surprisal shows the second driver is **meaning, not
+familiarity** (FAMILIARITY n.s.; MEANING significant) — "fragmented nonsense" earned, not assumed.
 
 The picture is sharper and more mechanistic than iteration 1's. **The only effect robust to a change of
 tokenizer is surface texture-recognition. The deep "name-adjacent" region holds *fragmented nonsense* —
@@ -215,6 +216,26 @@ voces (~0) persist *less* than matched asemic non-names. So the two-factor decom
 reversal are **not a single-model artifact** — they hold across BPE-free SentencePiece tokenizers of 32k and
 256k vocab, at opposite ends of the Greek-fragmentation range.
 
+**Splitting the bundle: the second factor is meaning, not familiarity (Gemma, v3).** The "lexicality" arm above
+confounds meaning with frequency/familiarity (the lexical cohort is high-frequency international loanwords). A v3
+factorial splits them: a real-Greek pool divided by the *model's own surprisal* into a FAMILIAR (low-surprisal,
+2.4 nats) and an UNFAMILIAR (high-surprisal, 4.0 nats) half — both meaningful, both fragmentation-matched — with
+asemic cohorts regenerated across 5 seeds. The result isolates the axes (all with bootstrap CIs):
+FRAGMENTATION +0.018 [0.005, 0.031] **(sig)**; **FAMILIARITY −0.002 [−0.016, 0.013] — *not significant*** (among
+meaningful words, familiar and unfamiliar both fail to persist, ≈+0.008); **MEANING +0.020 [0.009, 0.031] —
+*significant*** (meaningless asemic Greek persists, +0.027; meaningful Greek does not, even when unfamiliar);
+NAMEHOOD −0.023 [−0.036, −0.011] (sig). So **the second driver is meaninglessness, not frequency or
+familiarity** — the bundle resolves to *meaning* once the model's own surprisal controls for familiarity. The
+asemic deep gap is also near-identical across the 5 seeds (sd = 0.0024), closing the single-draw concern.
+
+One refinement v3's *absolute* (un-subtracted) Greek name-likeness adds: meaningful Greek is deep-name-like in
+*both* scripts (familiar +0.077, unfamiliar +0.064 absolute) — *more* than the voces (+0.011) — so its Greek
+*minus* Latin gap is ~0 because recognition shows in both renderings, not because it is un-name-like. The
+deep-Greek *gap* is therefore a **script-asymmetry** measure: it is large only when the Greek rendering drifts
+name-adjacent in a way the Latin does not — i.e. for a heavily-fragmented, *unrecognized* (meaningless) string.
+Recognition collapses the asymmetry. That is the same H1↔depth coupling, now visible in the magnitudes: what
+makes a string recognizable (in either script) is what keeps it off the deep-fragmentation peak.
+
 So §3.4 does what §3.3 could not: it shows fragmentation is necessary-but-not-sufficient, names a second
 necessary factor (novelty/unfamiliarity), and rules namehood out — not as an undetected null, but as a *measured
 reversal*. (Caveats: two models now (Mistral, Gemma); the two non-name arms are n≈28–34; the lexical arm bundles
@@ -245,14 +266,15 @@ mechanism with a null where the romance lived (with the second factor still a fa
   with frequency/familiarity; the v3 notebook splits that by the model's own surprisal. The non-name arms are
   n≈28–34 (bootstrap CIs throughout); the cross-model fragmentation *ordering* (§3.3) is still only three
   confounded points.
-- **The "lexicality" axis is a familiarity bundle, not pure meaning.** The lexical-matched cohort is long Greek
-  loanword/learned forms (ΦΙΛΟΣΟΦΙΑ, ΔΗΜΟΚΡΑΤΙΑ, ΑΝΘΡΩΠΟΛΟΓΙΑ…) selected to ~11 Greek tokens. They are not only
-  *meaningful* — they are *high-frequency and cross-lingually familiar* international vocabulary, and they tend to
-  receive *morphemic* subword tokens where the asemic strings get byte-fragments at the same count. So the
-  +0.076 "lexicality" effect confounds meaning, frequency, familiarity, and tokenization-quality; we now name the
-  factor **novelty/unfamiliarity** for honesty. **The owed fix (v3) is a *meaningful-but-unfamiliar* Greek
-  cohort** — rare/archaic words, not international loanwords — which separates meaning from frequency. Until it
-  runs, "fragmented *nonsense*" should be read as "fragmented *unfamiliar* Greek."
+- **The "lexicality" bundle — now split (v3): the factor is meaning, not familiarity.** The v2 lexical-matched
+  cohort was high-frequency international loanwords (ΦΙΛΟΣΟΦΙΑ, ΔΗΜΟΚΡΑΤΙΑ…), so the +0.076 effect confounded
+  meaning, frequency, and familiarity. v3 (§3.4, Gemma) separates them by splitting a real-Greek pool on the
+  *model's own surprisal*: **FAMILIARITY is n.s. (−0.002) and MEANING is significant (+0.020)** — among
+  meaningful Greek, familiar and unfamiliar both fail to persist; only *meaningless* Greek does. So "fragmented
+  *nonsense*" is **earned**, not assumed — the second factor is meaninglessness, with frequency ruled out. *Still
+  owed:* the v3 split is Gemma-only so far (Mistral v3 is a one-cell re-run); and the morphemic-vs-byte
+  tokenization difference still co-travels with meaning (real words get morphemic tokens), so "meaning" here is
+  inseparable from "is-it-tokenized-as-a-word" — arguably the same thing for a transformer, but worth naming.
 - **The name-likeness metric rests on a small, genre-specific anchor.** Name-likeness is cosine to a *name*
   centroid (16 Greek mythological/historical names) minus a *random* centroid (28 strings). 16 names is a noisy
   centroid, and "name-like" is really "near this specific cloud of Greek proper nouns" — a design-level limit

@@ -75,6 +75,16 @@ FRAGMENTATION +0.031 [0.016, 0.046], LEXICALITY +0.039 [0.028, 0.051], NAMEHOOD 
 So the decomposition is **not single-model**. Caveat that survives: the lexical arm bundles meaning with
 frequency/familiarity (v3 notebook splits it by the model's own surprisal); non-name arms n≈28–34.
 
+**v3 splits the bundle → the second factor is MEANING, not familiarity (Gemma; `..._v3-separation_...json`).**
+Splitting the real-Greek pool by the model's own surprisal into familiar (2.4 nats) vs unfamiliar (4.0 nats):
+FRAGMENTATION +0.018 [0.005,0.031] sig · **FAMILIARITY −0.002 [−0.016,0.013] n.s.** · **MEANING +0.020
+[0.009,0.031] sig** · NAMEHOOD −0.023 [−0.036,−0.011] sig. Familiar and unfamiliar *meaningful* Greek both fail
+to persist (≈+0.008); only *meaningless* asemic Greek persists (+0.027). So frequency/familiarity is ruled out —
+"fragmented nonsense" is **earned**. Bonus: asemic deep gap across 5 seeds sd=0.0024 (single-seed concern dead);
+and *absolute* Greek name-likeness shows meaningful Greek IS deep-name-like in BOTH scripts (so its Greek−Latin
+gap is ~0 via recognition, not un-name-likeness) — the gap is a script-asymmetry recognition collapses. Mistral
+v3 (a one-cell re-run) is the natural confirmation.
+
 ## 4. Synthesis (3 of 4 models; factorial single-model)
 Surface recognition generalizes (H1, robust); no voces-specific deep representation (decider null, and §3b's
 NAMEHOOD arm slightly *negative*); the deep "script" effect decomposes (Mistral factorial, §3b) into **two
