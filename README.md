@@ -109,11 +109,13 @@ Code: MIT. Paper text and figures: CC BY 4.0. PGM source material is scholarship
   author = {Pavan, Tomás},
   title  = {It's the Script, Not the Spell: A Voces-Negative Result on Deep Representation in Language Models},
   year   = {2026},
-  note   = {ICMI Working Paper No. 27, preprint draft.
-            Designed and analyzed in dialogue with Claude (Opus 4.8); see CONTRIBUTIONS.md and git history.},
+  note   = {ICMI Working Paper No. 27, preprint draft. Designed and analyzed in dialogue with two
+            Claude Opus 4.8 instances --- one on claude.ai (design) and one on Claude Code (build \&
+            analysis); see CONTRIBUTIONS.md and git history.},
   url    = {https://github.com/Wondermonger-daydreaming/voces-residual-stream}
 }
 ```
 
 *Authorship & AI collaboration: [`CONTRIBUTIONS.md`](CONTRIBUTIONS.md). The author is accountable; the AI
-collaboration is acknowledged, not credited as authorship.*
+collaboration — **two Claude Opus 4.8 instances, one on claude.ai (design) and one on Claude Code (build &
+analysis)** — is acknowledged, not credited as authorship.*
