@@ -4,7 +4,7 @@
 
 This repository studies how a transformer represents the *voces magicae* — the "barbarous names" of the Greek Magical Papyri (PGM), strings their own tradition holds to be efficacious through *form* rather than meaning. They are a clinical, meaning-evacuated probe of how a model encodes the boundary between language, name, and ornament: language deliberately built to operate *without reference*, used to probe a system that processes the form of tokens with no native concept of what they point to.
 
-> **TL;DR.** A 7B-class model (Qwen2.5) *does* recognize the orthographic **texture** of a barbarous name — cleanly, on sight, at the embedding/early layers (H1: ~0.89–0.94 separable from token-matched nonsense, beyond a surprisal baseline, robust to model swap and de-quantization). But that recognition is **shallow**: it washes out by mid-network. An intermediate run suggested name-likeness *persists deep in Greek script*; a control dissolved it — token-matched **nonsense** in Greek persists deep just as much as the voces do (voces +0.027 vs controls +0.020; *p* = 0.224, n = 49). The deep-Greek effect is a fact about **Greek-script processing**, not about the voces. Geometry bought adjacency, not aboutness; the adjacency is surface; the depth was Greek, not magic.
+> **TL;DR.** A 7B-class model (Qwen2.5) *does* recognize the orthographic **texture** of a barbarous name — cleanly, on sight, at the embedding/early layers (H1: ~0.89–0.94 separable from token-matched nonsense, beyond a surprisal baseline, robust to a within-family scale change (3B↔7B) and de-quantization; cross-family untested). But that recognition is **shallow**: it washes out by mid-network. An intermediate run suggested name-likeness *persists deep in Greek script*; a control dissolved it — token-matched **nonsense** in Greek persists deep just as much as the voces do (voces +0.027 vs controls +0.020; *p* = 0.224, n = 49). The deep-Greek effect is a fact about **Greek-script processing**, not about the voces. Geometry bought adjacency, not aboutness; the adjacency is surface; the depth was Greek, not magic.
 
 This is a **negative result, reported as a result.** It is, as the study's own design anticipated, a pointed comment on what subword tokenization does to exactly the language the magicians thought most powerful.
 
@@ -26,7 +26,7 @@ This is a **negative result, reported as a result.** It is, as the study's own d
 
 | path | contents |
 |------|----------|
-| `paper/its-the-script-not-the-spell.docx` | the working paper (ICMI WP No. 27, preprint draft) |
+| `paper/its-the-script-not-the-spell.docx` | the working paper (ICMI WP No. 27 — *Institute for a Christian Machine Intelligence*, a **self-published, non-peer-reviewed** series; **not** the ACM ICMI conference) |
 | `paper/study-spec.md` | the full pre-registration-grade study spec (hypotheses, cohorts, confound catalog, falsifiers) |
 | `results/voces_v6_results.json` | **canonical results** — genuine end-to-end run-output (seed 0) incl. the `voces_specificity` decider object (what the figures read) |
 | `results/voces_v6_frozen_controls.json` | the exact model-generated stimuli — 76 self-contained token-matched **pairs** (`dtok`/`dsurp` deltas) + anchor cohorts; verify the isomorphism without rerunning extraction |
@@ -37,7 +37,7 @@ This is a **negative result, reported as a result.** It is, as the study's own d
 | `src/build_notebook.py` | generator for the notebook above — the canonical source of the pipeline code |
 | `src/make_data.py` | builds `data/` from the corpus definitions (CPU, no model) |
 | `src/make_figures.py` | regenerates both figures from `results/voces_v6_results.json` — **reads every value from the JSON, nothing hard-coded** (CPU, no model) |
-| `src/steer_interventions.py` | activation-steering harness (norm-scaled dosing, control vector, effect measurement) — built for the H4 arm; included for completeness |
+| `src/steer_interventions.py` | activation-steering scaffold for the H4 arm — **unrun; no result is claimed.** Its only valid target is H1's *surface* texture, **not** the H2 deep representation (steering toward a rep we showed is indistinguishable from control, p=0.224, would probe a thing we have evidence isn't there) |
 | `data/voces.jsonl` | the 76 barbarous-name strings (public-domain attestations) + our analysis tags; **no copyrighted Betz text** |
 | `data/theonym_roots.json`, `data/anchor_controls.json` | theonym lexicon + name/word/random anchor cohorts |
 
@@ -60,15 +60,21 @@ file parses, the corpus rebuilds, the decider object is present, and both figure
 
 | | hypothesis | verdict |
 |---|------------|---------|
-| **H1** | the model separates voces from token-matched controls | **confirmed** — 0.89–0.94, beats surprisal by +0.38, survives model swap + de-quantization |
+| **H1** | the model separates voces from token-matched controls | **confirmed** — 0.89–0.94, beats surprisal by +0.38, survives a within-family scale change (3B↔7B) + de-quantization (cross-family untested) |
 | **H2** | name-likeness is **voces-specific** and survives into deep layers | **not supported** — shallow in both scripts; deep-Greek effect is not voces-specific (voces ≈ controls, p=0.224) |
 | **Falsifier #1** | name-likeness is entirely the embedded theonyms | refuted — theonym split null |
 | **Falsifier #4** | separability is surprisal in disguise | refuted — surprisal baseline near chance |
 | **script migration** | abstract form survives a script change | mis-attributed — the effect is the *script*, not the form (see the decider) |
 
+*Probe: L2-regularized logistic regression on mean-pooled residual-stream activations, **GroupKFold
+cross-validation by string-family** (so "separable" means out-of-family generalization, not memorization of
+individual strings).*
+
 ## The honest hedge
 
-The voces > control point estimate leans the predicted way (+0.007 in Greek) but **sits inside the noise at n=49** (p=0.224). So the strong claim — a deep, voces-specific representation — is **unsupported at this power, not disproven.** A higher-power 7B-fp16 run could revisit whether a small voces-specific deep residual exists beneath the script effect. The MVP conclusion is deflationary, and the paper states it plainly.
+The voces > control point estimate leans the predicted way (+0.007 in Greek) but **sits inside the noise at n=49** (p=0.224). So the strong claim — a deep, voces-specific representation — is **unsupported at this power, not disproven.**
+
+Two distinct uncertainties, and we only quantify one: the p=0.224 is across **strings** (n=49) — it measures *string-sample* variance. **Run variance is unestimated**: this is a single seed (n_seeds=1), so we have *zero* estimate of how much the decider moves across runs. "Unsupported at this power" quantifies string power only; seed power is not yet bounded. A multi-seed (≥3) repeat is in future work precisely to put numbers on the pilot-weight caveat. A higher-power, cross-family 7B-fp16 run could then revisit whether a small voces-specific deep residual exists beneath the script effect. The MVP conclusion is deflationary, and the paper states it plainly.
 
 ## How this result was reached (and why that matters)
 
@@ -96,7 +102,18 @@ See [`PROVENANCE.md`](PROVENANCE.md) for: model revision, seed, the token-match 
 
 ## Status
 
-Single-model pilot (Qwen2.5-3B, one seed). The H1 result is robust; the central H2 *negative* is the claim, stated at pilot weight. The script-asymmetry side-finding (Greek-script tokens held name-adjacent deeper than Latin) is real and incidental — a fact about script processing, flagged for follow-up, not a result about ritual language.
+Single-model, single-tokenizer, single-seed pilot (Qwen2.5-3B). **Limitations, most-fragile first:**
+1. **The Greek arm rests on a single tokenizer.** The deep-Greek finding is downstream of *one* tokenization scheme — this is where the result is most fragile, and a cross-tokenizer/cross-family check is the first thing that could move it.
+2. **Single seed** — run-variance is unestimated (the p=0.224 is string-sample variance only; see *The honest hedge*).
+3. **Within-Qwen-family only** (3B↔7B) — cross-family (Llama, Gemma) untested.
+
+The H1 result is robust within those bounds; the central H2 *negative* is the claim, stated at pilot weight. The script-asymmetry side-finding (Greek-script tokens held name-adjacent deeper than Latin) is real and incidental — a fact about script processing, flagged for follow-up, not a result about ritual language.
+
+## Future work
+
+- **Cross-family replication (Llama, Gemma).** H1 and the Greek finding are within-Qwen-family only; the Greek effect specifically is downstream of a single tokenizer.
+- **Multi-seed (≥3) repeat.** Bounds run-variance, which a single seed leaves unestimated — turns "pilot weight" from a hedge into a quantified uncertainty.
+- **Is the deep-Greek effect latent distributional *namehood*, not pure orthography? — *with its falsifier attached.*** A reviewer's hypothesis: Greek tokens may skew proper-name/theonym in pretraining, so deep-Greek persistence could be real distributional namehood rather than surface orthography. **This is the romantic-reading shape, and it does not enter the repo without its killer:** render *non-name* Greek strings (function words, numerals, common nouns) and test whether they persist deep too. If they do → pure script-processing, hypothesis dead. Only if *name-plausible* Greek alone persists is there a namehood effect worth chasing. *Stated only with the test, never the hypothesis alone — adding the exciting idea without its control would reintroduce exactly the disease this paper cured.*
 
 ## License
 
@@ -109,9 +126,10 @@ Code: MIT. Paper text and figures: CC BY 4.0. PGM source material is scholarship
   author = {Pavan, Tomás},
   title  = {It's the Script, Not the Spell: A Voces-Negative Result on Deep Representation in Language Models},
   year   = {2026},
-  note   = {ICMI Working Paper No. 27, preprint draft. Designed and analyzed in dialogue with two
-            Claude Opus 4.8 instances --- one on claude.ai (design) and one on Claude Code (build \&
-            analysis); see CONTRIBUTIONS.md and git history.},
+  note   = {ICMI Working Paper No. 27 (Institute for a Christian Machine Intelligence --- a self-published,
+            non-peer-reviewed working-paper series; NOT the ACM ICMI conference). Preprint draft. Designed
+            and analyzed in dialogue with two Claude Opus 4.8 instances --- one on claude.ai (design) and
+            one on Claude Code (build \& analysis); see CONTRIBUTIONS.md and git history.},
   url    = {https://github.com/Wondermonger-daydreaming/voces-residual-stream}
 }
 ```

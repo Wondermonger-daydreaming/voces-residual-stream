@@ -1,6 +1,12 @@
 """
 steer_interventions.py — Layer 6 (H4) of the voces-magicae study.
 
+STATUS: UNRUN SCAFFOLD. No steering result is claimed anywhere in this repository.
+Its only valid target is H1's *surface* texture (the early-layer, on-sight recognition),
+NOT the H2 deep representation: the study showed the deep voces-specific representation is
+indistinguishable from a token-matched control (p=0.224), so steering "toward" it would be
+probing a thing we have evidence isn't there. Run it against the H1 surface effect or not at all.
+
 Rewrite of the original plumbing-only steering script to add the three things that
 made the original uninterpretable as an *experiment*:
 
