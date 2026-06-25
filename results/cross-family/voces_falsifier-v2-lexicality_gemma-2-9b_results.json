@@ -1,0 +1,76 @@
+{
+  "model": "google/gemma-2-9b",
+  "version": "falsifier-v2-lexicality_gemma-2-9b",
+  "quantized": true,
+  "n_layers": 42,
+  "seed": 0,
+  "target_greek_tok": 8,
+  "cohort_fragmentation": {
+    "voces": {
+      "mean": 7.666666666666667,
+      "median": 7.5,
+      "n": 48
+    },
+    "nn_asemic": {
+      "mean": 7.821428571428571,
+      "median": 8.0,
+      "n": 28
+    },
+    "nn_lexical": {
+      "mean": 7.823529411764706,
+      "median": 8.0,
+      "n": 34
+    },
+    "nn_lowfrag": {
+      "mean": 3.0384615384615383,
+      "median": 3.0,
+      "n": 26
+    }
+  },
+  "deep_gaps": {
+    "voces": {
+      "mean": 0.0016322983428835869,
+      "ci_lo": -0.00893505197018385,
+      "ci_hi": 0.01221146248281002,
+      "n": 48
+    },
+    "nn_asemic": {
+      "mean": 0.030349280685186386,
+      "ci_lo": 0.02033580280840397,
+      "ci_hi": 0.040414080023765564,
+      "n": 28
+    },
+    "nn_lexical": {
+      "mean": -0.008961000479757786,
+      "ci_lo": -0.014198766089975834,
+      "ci_hi": -0.0036541507579386234,
+      "n": 34
+    },
+    "nn_lowfrag": {
+      "mean": -0.00010926004324574023,
+      "ci_lo": -0.010974951088428497,
+      "ci_hi": 0.010319928638637066,
+      "n": 26
+    }
+  },
+  "factorial": {
+    "NAMEHOOD": {
+      "diff": -0.028716981410980225,
+      "ci_lo": -0.04357859864830971,
+      "ci_hi": -0.014659143052995205,
+      "significant": true
+    },
+    "FRAGMENTATION": {
+      "diff": 0.030458541586995125,
+      "ci_lo": 0.01644686795771122,
+      "ci_hi": 0.04548743739724159,
+      "significant": true
+    },
+    "LEXICALITY": {
+      "diff": 0.0393102802336216,
+      "ci_lo": 0.028284845873713493,
+      "ci_hi": 0.05069893226027489,
+      "significant": true
+    }
+  }
+}

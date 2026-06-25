@@ -37,7 +37,7 @@ voces-specific deep representation in any family**: the decider is null in Qwen 
 Gemma cell (Latin, p=0.007) is unreplicated and run-variable under 4-bit. **(3) The deep-Greek persistence
 *tracks Greek byte-fragmentation* across the three models** — Mistral (10.76 Greek tokens/vox, gap +0.051) >
 Qwen (9.63, +0.016) > Gemma (7.69, ~0.000) — a monotone relationship precision and size do not explain, though it
-co-varies with family and vocab (n=3). **(4) A matched-cohort factorial (Mistral) decomposes the deep effect
+co-varies with family and vocab (n=3). **(4) A matched-cohort factorial (Mistral, replicated on Gemma) decomposes the deep effect
 into two co-equal drivers and a null.** Holding Greek-token fragmentation fixed at ~11 tokens, with bootstrap
 95% CIs: *fragmentation* drives it (asemic Greek at 11 tokens persists deep, +0.073; at 5 tokens it does not,
 −0.005; Δ=+0.078, CI excludes 0); *novelty/unfamiliarity* drives it just as strongly (asemic Greek persists,
@@ -205,10 +205,20 @@ to the model — they are a *recognizable genre* (H1 reads their texture cleanly
 pure random strings on exactly the novelty axis that drives the depth. The same recognizability that makes H1 a
 robust positive at the surface makes the names *less* deep-fragment-adjacent than the random controls.
 
+**Replication in a second family (Gemma-2-9B).** Re-running the identical factorial on Gemma — the model that
+fragments Greek *least* (§3.3), where the cross-model deep-Greek gap was ~0 — reproduces the whole structure,
+all three contrasts significant and same-signed: FRAGMENTATION +0.031 [0.016, 0.046], FAMILIARITY/LEXICALITY
++0.039 [0.028, 0.051], NAMEHOOD −0.029 [−0.044, −0.015]. The magnitudes are smaller than Mistral's (Gemma's
+cohorts sit at ~8 Greek tokens vs Mistral's ~11 — *consistent* with fragmentation being a driver), but the
+mechanism is identical: fragmented asemic Greek persists deep (+0.030), familiar Greek does not (−0.009), and the
+voces (~0) persist *less* than matched asemic non-names. So the two-factor decomposition and the namehood
+reversal are **not a single-model artifact** — they hold across BPE-free SentencePiece tokenizers of 32k and
+256k vocab, at opposite ends of the Greek-fragmentation range.
+
 So §3.4 does what §3.3 could not: it shows fragmentation is necessary-but-not-sufficient, names a second
 necessary factor (novelty/unfamiliarity), and rules namehood out — not as an undetected null, but as a *measured
-reversal*. (Caveats: single model; the two non-name arms are n≈28–29; the lexical arm bundles meaning with
-frequency/familiarity (§5); and the name-likeness metric, the deep-band, and the single-seed cohorts are all
+reversal*. (Caveats: two models now (Mistral, Gemma); the two non-name arms are n≈28–34; the lexical arm bundles
+meaning with frequency/familiarity (§5); and the name-likeness metric, the deep-band, and the single-seed cohorts are all
 limitations §5 lists. The factorial wants a second model before it generalizes.)
 
 ## 4. What survives, and what the depth was
@@ -229,10 +239,12 @@ mechanism with a null where the romance lived (with the second factor still a fa
 
 ## 5. The honest hedges
 
-- **The factorial is one model (Mistral).** §3.4's decomposition is decisive *for Mistral*; the two non-name
-  arms are n≈28–29 (bootstrap CIs reported throughout). A second model (the pending Llama, or fp16 Gemma) is
-  owed before the two-factor mechanism is called cross-family. The cross-model fragmentation ordering (§3.3) is
-  still only three confounded points.
+- **The factorial now holds in two models (Mistral + Gemma), but the meaning/familiarity split is still owed.**
+  §3.4's decomposition replicates on Gemma (all three contrasts significant, same-signed) — so it is not a
+  single-model artifact. What both models share, and what v3 fixes, is that the "lexicality" arm bundles meaning
+  with frequency/familiarity; the v3 notebook splits that by the model's own surprisal. The non-name arms are
+  n≈28–34 (bootstrap CIs throughout); the cross-model fragmentation *ordering* (§3.3) is still only three
+  confounded points.
 - **The "lexicality" axis is a familiarity bundle, not pure meaning.** The lexical-matched cohort is long Greek
   loanword/learned forms (ΦΙΛΟΣΟΦΙΑ, ΔΗΜΟΚΡΑΤΙΑ, ΑΝΘΡΩΠΟΛΟΓΙΑ…) selected to ~11 Greek tokens. They are not only
   *meaningful* — they are *high-frequency and cross-lingually familiar* international vocabulary, and they tend to

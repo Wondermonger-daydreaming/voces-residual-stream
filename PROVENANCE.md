@@ -47,7 +47,8 @@ Scope of impact: **the paper's headline cells are unaffected** — Mistral's dec
 file, and the paper's Gemma column uses the *original* Gemma run (Greek p=0.094), not the re-run. The re-run is
 cited only for the Latin-cell run-variance (0.007→0.032). We nonetheless **do not rely on the re-run's absolute
 p-values**, and treat the 4-bit Gemma decider as unreliable pending an **fp16 re-run**
-(`notebooks/voces_falsifier_v2_lexicality.ipynb` pointed at `google/gemma-2-9b` re-runs it cleanly).
+(re-run the cross-family **decider** notebook `notebooks/voces_crossfamily.ipynb` on Gemma in fp16 — the
+falsifier notebooks compute the factorial, not `voces_specificity`, so they do not resolve this anomaly).
 
 ## The non-name falsifier: confounded v1, repaired v2
 

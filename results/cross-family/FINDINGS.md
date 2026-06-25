@@ -67,8 +67,13 @@ Three single-axis contrasts, **all significant** (bootstrap CI on the diff exclu
 **Mechanism:** the deep region holds Greek that is *both* heavily fragmented *and* meaning-less ("fragmented
 nonsense") — neither condition alone suffices. The voces sit just *below* pure noise because they are a
 recognizable genre (exactly what H1 reads), so they are marginally less alien than true random. The v2 run also
-**replicates v1 exactly** (voces +0.040≈+0.041; low-frag −0.005). Caveat: single model; non-name arms n≈28–29;
-"meaningful Greek" = long Greek loanforms (may also carry morphemic, not just byte-level, tokens — see paper §5).
+**replicates v1 exactly** (voces +0.040≈+0.041; low-frag −0.005).
+
+**Replicated on Gemma-2-9B** (the least-Greek-fragmenting model): same structure, all three significant —
+FRAGMENTATION +0.031 [0.016, 0.046], LEXICALITY +0.039 [0.028, 0.051], NAMEHOOD −0.029 [−0.044, −0.015]
+(smaller magnitudes, Gemma cohorts at ~8 vs Mistral's ~11 Greek tok — consistent with fragmentation mattering).
+So the decomposition is **not single-model**. Caveat that survives: the lexical arm bundles meaning with
+frequency/familiarity (v3 notebook splits it by the model's own surprisal); non-name arms n≈28–34.
 
 ## 4. Synthesis (3 of 4 models; factorial single-model)
 Surface recognition generalizes (H1, robust); no voces-specific deep representation (decider null, and §3b's
@@ -97,7 +102,9 @@ holds *fragmented nonsense*; the voces are too recognizable (H1) to live all the
    fragmentation). Bootstrap CIs on every gap. This is what the v1 falsifier should have been.
 2. **Llama-3.1-8B** (tiktoken 128k) — 4th point. Predicted: Greek ≈ 9–10 tok/vox, deep gap ≈ Qwen's +0.016.
 3. **fp16 Gemma** — confirm the p=0.007 dissolves un-quantized (and resolves the 4-bit re-run p-value anomaly,
-   below). The v2 notebook re-runs the Gemma decider if pointed at `google/gemma-2-9b`.
+   below). NB: resolving the *decider* anomaly needs re-running the cross-family **decider** notebook
+   (`notebooks/voces_crossfamily.ipynb`) on Gemma — the falsifier notebooks compute the *factorial*, not
+   `voces_specificity`.
 
 
 ## Addendum — the 4-bit Gemma decider is unreliable (run-variance + a value anomaly); fp16 owed
@@ -113,9 +120,11 @@ decider p is **byte-identical to Mistral's** — `0.2659000459593744` — despit
 means (Gemma vox_deep 0.0068 vs Mistral 0.0598). Identical analytic p-values from different data are impossible
 by independent computation; this is a **value-bleed/assembly bug** in the 4-bit re-run output. It does not touch
 the paper's headline cells (Mistral's own p comes from the Mistral file; the Gemma column uses the *original*
-Gemma run, p=0.094), but it confirms the 4-bit Gemma re-run artifact is not trustworthy. fp16 Gemma (via the v2
-notebook pointed at `google/gemma-2-9b`) resolves both the run-variance and this anomaly.
+Gemma run, p=0.094), but it confirms the 4-bit Gemma re-run artifact is not trustworthy. Resolving it needs an
+**fp16 re-run of the cross-family decider notebook** (`notebooks/voces_crossfamily.ipynb`) on Gemma — the
+falsifier notebooks do not compute `voces_specificity`, so they cannot resolve this anomaly.
 
-The non-name-Greek falsifier (Cell 10g) ran on the Gemma re-run too but is uninformative there (Gemma has no
-deep-Greek effect to falsify: voces +0.001 ≈ non-name 0.000). The Mistral falsifier (§3b) is also uninformative,
-for the cohort-confound reason — not a within-model "confirmation."
+The original v1 non-name falsifier (Cell 10g) ran on the Gemma re-run too but was uninformative there (Gemma has
+no deep-Greek voces effect: voces +0.001). The **matched factorial (§3b), by contrast, is informative on Gemma**
+and replicates Mistral's structure (all three contrasts significant) — because it builds its own
+fragmentation-matched asemic cohort rather than relying on the voces' weak Gemma signal.
