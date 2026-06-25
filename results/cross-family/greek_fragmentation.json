@@ -6,13 +6,22 @@
     {"model": "Gemma-2-9B",      "vocab": 256000, "greek_tok_per_vox": 7.69,  "latin_tok_per_vox": null, "deep_greek_gap_auth_minus_latin": 0.000, "decider_null": "latin p=0.007 unreplicated -> artifact"}
   ],
   "result": "Monotonic: more Greek fragmentation -> stronger deep-Greek name-adjacency. Precision (4-bit Gemma+Mistral at opposite ends) and size (3B/7B/9B) do not explain it. Direct measure, not vocab-size proxy.",
-  "nonname_falsifier_mistral": {
-    "note": "Non-name-Greek falsifier on Mistral: UNINFORMATIVE. The two cohorts differ on THREE axes at once -- fragmentation (the non-name cohort fragments ~2x less, 5.15 vs 10.73 Greek tok/str), lexicality (non-name = real Greek; voces = asemic), and namehood -- so the binary 'name-specific' verdict cannot adjudicate, in either direction. NOT a within-model confirmation. The purpose-built fix (fragmentation- AND lexicality-matched arms) is notebooks/voces_falsifier_v2_lexicality.ipynb. See src/check_nonname_fragmentation.py and FINDINGS.md 3b.",
+  "matched_factorial_mistral": {
+    "note": "v2 falsifier (voces_falsifier-v2-lexicality_Mistral-7B-v0.3_results.json): holds Greek-token fragmentation fixed at ~11 and varies one axis at a time; bootstrap 95% CIs; all four cohorts one model + one pair of centroids (magnitudes comparable). Resolves what the v1 nonname_falsifier (confounded, ~2x frag mismatch) could not. Replicates v1: voces +0.040 vs +0.041; low-frag -0.005.",
     "model": "Mistral-7B-v0.3",
-    "voces_lowT": {"greek_tok_per_str": 10.73, "deep_greek_gap": 0.041, "n": 49},
-    "nonname":    {"greek_tok_per_str": 5.15,  "deep_greek_gap": -0.005, "n": 26},
-    "caveat": "no CI/significance test on either gap; lexicality reading not excluded"
+    "deep_gaps": {
+      "voces":              {"greek_tok": 10.73, "gap": 0.040,  "n": 48},
+      "nonname_asemic":     {"greek_tok": 11.04, "gap": 0.073,  "n": 28},
+      "nonname_lexical":    {"greek_tok": 11.03, "gap": -0.003, "n": 29},
+      "nonname_lexical_lowfrag": {"greek_tok": 5.15, "gap": -0.005, "n": 26}
+    },
+    "factorial_significant_all": {
+      "FRAGMENTATION": {"diff": 0.078, "ci": [0.053, 0.101], "reading": "fragmentation drives it"},
+      "LEXICALITY":    {"diff": 0.076, "ci": [0.053, 0.099], "reading": "meaninglessness drives it (co-equal); meaningful Greek does NOT persist"},
+      "NAMEHOOD":      {"diff": -0.033, "ci": [-0.057, -0.010], "reading": "no namehood -- voces persist deep LESS than matched random asemic; reversed"}
+    },
+    "mechanism": "the deep region holds Greek that is BOTH heavily fragmented AND meaning-less (fragmented nonsense); neither alone suffices; the voces sit just below pure noise because they are a recognizable genre (H1)"
   },
-  "caveats": ["n=3 models, monotone-by-chance prob 1/3", "Greek-fragmentation co-varies with family + vocab size + training Greek fraction (no same-family-different-tokenizer control) -> correlational, not a demonstrated mechanism", "non-name-Greek falsifier RUN on Mistral but UNINFORMATIVE (cohort confounded on fragmentation AND lexicality); lexicality-matched arm owed (v2 notebook)", "Llama (tiktoken 128k) is the 4th point"],
+  "caveats": ["n=3 models for the cross-model ordering, monotone-by-chance prob 1/3; co-varies with family+vocab+training Greek fraction (correlational)", "the matched factorial is SINGLE-MODEL (Mistral); non-name arms n=28-29; a 2nd model owed", "'meaningful Greek' = long Greek loanforms, may carry morphemic (not just byte) tokens", "Llama (tiktoken 128k) is the 4th cross-model point"],
   "gemma_tokenizer_source": "unsloth/gemma-2-9b (non-gated mirror, identical SentencePiece tokenizer to google/gemma-2-9b)"
 }

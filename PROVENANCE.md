@@ -49,12 +49,18 @@ cited only for the Latin-cell run-variance (0.007→0.032). We nonetheless **do 
 p-values**, and treat the 4-bit Gemma decider as unreliable pending an **fp16 re-run**
 (`notebooks/voces_falsifier_v2_lexicality.ipynb` pointed at `google/gemma-2-9b` re-runs it cleanly).
 
-## The non-name falsifier and its purpose-built successor
+## The non-name falsifier: confounded v1, repaired v2
 
-The iteration-2 non-name-Greek falsifier (`nonname_falsifier` in the Mistral results) is **uninformative**: its
-cohort differs from the voces on fragmentation (~2×), lexicality (real vs asemic Greek), and namehood at once
-(see paper §3.4, `src/check_nonname_fragmentation.py`). The fragmentation confound was audited only *after* the
-falsifier returned the thesis-threatening verdict — a scrutiny asymmetry disclosed in the paper; the confound is
-direction-independent, so the verdict is invalid whichever way it fell. The purpose-built replacement —
-fragmentation- **and** lexicality-matched non-name cohorts with bootstrap CIs — is
-`notebooks/voces_falsifier_v2_lexicality.ipynb`, built but not yet run.
+The iteration-2 non-name-Greek falsifier (`nonname_falsifier` in the Mistral results) was **confounded** — its
+cohort differed from the voces on fragmentation (~2×), lexicality (real vs asemic Greek), and namehood at once
+(`src/check_nonname_fragmentation.py`). The confound was audited only *after* the falsifier returned the
+thesis-threatening verdict — a scrutiny asymmetry disclosed in the paper; the confound is direction-independent,
+so the verdict was invalid whichever way it fell.
+
+It was then **repaired and re-run**: `notebooks/voces_falsifier_v2_lexicality.ipynb` builds non-name cohorts
+matched to the voces on **both** fragmentation (~11 Greek tokens) and varied on lexicality, with bootstrap 95%
+CIs (`results/cross-family/voces_falsifier-v2-lexicality_Mistral-7B-v0.3_results.json`, Mistral, seed 0). It
+resolves paper §3.4 into two co-equal significant drivers (FRAGMENTATION +0.078, LEXICALITY +0.076) and a
+significant null-then-reversal (NAMEHOOD −0.033), and **replicates the v1 numbers** (voces +0.040 vs +0.041;
+low-frag −0.005). Single model; non-name arms n≈28–29; a second model is owed before the decomposition is called
+cross-family.

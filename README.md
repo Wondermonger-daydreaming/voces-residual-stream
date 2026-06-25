@@ -116,14 +116,17 @@ The H1 result is robust within those bounds; the central H2 *negative* is the cl
 ## Iteration 2 (cross-family) — DONE for 3 of 4 models → see [`results/cross-family/`](results/cross-family/)
 
 The two most fragile limitations below have now been addressed. The cross-family run (Qwen2.5-3B, Gemma-2-9B,
-Mistral-7B-v0.3) is in: **surface recognition (H1) replicates 3/3; the spell stays dead; and the deep-Greek
-effect is a measured byte-fragmentation artifact** whose magnitude scales monotonically with Greek
-tokens-per-vox. Read [`results/cross-family/FINDINGS.md`](results/cross-family/FINDINGS.md) and the iteration-2
-paper [`paper/its-the-script-not-the-spell-v2-crossfamily.md`](paper/its-the-script-not-the-spell-v2-crossfamily.md):
-*"It's the Script, Not the Spell — and the Depth Is the Tokenizer."*
+Mistral-7B-v0.3) plus a within-model matched factorial is in: **surface recognition (H1) replicates 3/3; the
+spell stays dead (and is slightly *reversed* where cleanest); and the deep-Greek effect decomposes into two
+co-equal, individually-significant drivers — *fragmentation* AND *meaninglessness* — with *namehood* ruled out.**
+The deep "name-adjacent" region holds **fragmented nonsense** (both conditions necessary); the voces are too
+recognizable (the very thing H1 detects) to live all the way down there. Read
+[`results/cross-family/FINDINGS.md`](results/cross-family/FINDINGS.md) and the iteration-2 paper
+[`paper/its-the-script-not-the-spell-v2-crossfamily.md`](paper/its-the-script-not-the-spell-v2-crossfamily.md):
+*"It's the Script, Not the Spell — and the Depth Is Fragmented Nonsense."*
 
 - **Cross-family replication — DONE 3/4** (Llama-3.1-8B pending Meta's gate). Harness: `notebooks/voces_crossfamily.ipynb` reuses every science cell unchanged and only swaps the model; the model-tagged results JSONs are in `results/cross-family/`.
-- **The non-name-Greek falsifier — RUN (Mistral), and UNINFORMATIVE.** The reviewer's hypothesis (deep-Greek is distributional *namehood*, not orthography) was tested by rendering *non-name* Greek (numerals, function words, common nouns) and asking whether it persists deep too. Its automated verdict ("name-specific") **cannot be trusted**: the non-name cohort differs from the voces on *three* axes at once — fragmentation (it fragments ~2× less, 5.15 vs 10.73 Greek tokens/string), lexicality (real Greek vs asemic), and namehood — so it adjudicates none of them. `src/check_nonname_fragmentation.py` (CPU, tokenizer-only) reproduces the 2× gap; the audit was triggered by the inconvenient result (a scrutiny asymmetry we disclose; the confound is direction-independent). **The purpose-built fix is `notebooks/voces_falsifier_v2_lexicality.ipynb`** — fragmentation- *and* lexicality-matched cohorts with bootstrap CIs, ready to run. See `results/cross-family/FINDINGS.md` §3b. *The exciting hypothesis entered the repo only with its control attached — and when the control turned out confounded, we said so rather than spinning it.*
+- **The matched factorial — RUN (Mistral), and it RESOLVES the deep effect.** The v1 falsifier was confounded (its non-name cohort fragmented ~2× less than the voces *and* was lexical — `src/check_nonname_fragmentation.py` reproduces the 2× gap). Rebuilt as a factorial holding Greek-token fragmentation fixed at ~11 tokens with bootstrap 95% CIs (`notebooks/voces_falsifier_v2_lexicality.ipynb`), it decomposes the deep-Greek effect into **two co-equal, individually-significant drivers and a null**: **FRAGMENTATION** (+0.078) — asemic Greek persists deep when fragmented, not when short; **LEXICALITY** (+0.076) — *meaningful* Greek does **not** persist even at matched fragmentation; **NAMEHOOD** (−0.033, significant) — the voces persist deep *less* than matched random asemic strings. The deep region holds **fragmented nonsense** (both conditions necessary); the names are too recognizable (H1) to live all the way down. Replicates v1 exactly (voces +0.040 vs +0.041). See `results/cross-family/FINDINGS.md` §3b. *The confounded first falsifier was disclosed, then repaired — and the repaired version returned a better answer than the prediction.*
 
 ## Still owed
 

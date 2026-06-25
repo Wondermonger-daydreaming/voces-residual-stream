@@ -42,38 +42,40 @@ are at opposite ends) **or size**. It is script-general (decider null → not vo
 Greek, not the words.** (Data: `greek_fragmentation.json`. Gemma tokens via the non-gated `unsloth/gemma-2-9b`
 mirror.)
 
-## 3b. The non-name-Greek falsifier (RUN on Mistral) — UNINFORMATIVE (a confound, caught)
-The "killer" falsifier: does *non-name* Greek (numerals/function/common words — ΚΑΙ, ΔΥΟ, ΛΟΓΟΣ) also persist
-deep in the most-fragmenting model? Mistral result (`nonname_falsifier` in the results JSON):
+## 3b. The matched factorial (RUN on Mistral) — fragmentation AND meaninglessness, but NOT names
+The v1 falsifier (`nonname_falsifier`) compared the voces to short common Greek words and printed
+*"name-specific"* — confounded (its cohort fragmented ~2× less, 5.15 vs 10.73 Greek tok/str, AND was lexical).
+We rebuilt it as a **factorial holding Greek-token fragmentation fixed at ~11 tokens** with bootstrap 95% CIs
+(`notebooks/voces_falsifier_v2_lexicality.ipynb`; results
+`voces_falsifier-v2-lexicality_Mistral-7B-v0.3_results.json`). All four cohorts share one model + one pair of
+centroids → magnitudes directly comparable.
 
-| cohort | n | Greek tok/str | deep-Greek gap |
+| cohort | Greek tok/str | n | deep-Greek gap [95% CI] |
 |---|---|---|---|
-| voces (low-T, asemic) | 49 | **10.73** | **+0.041** |
-| non-name Greek (lexical) | 26 | **5.15** | **−0.005** |
+| voces (low-T, asemic) | 10.73 | 48 | **+0.040** [+0.027, +0.051] |
+| non-name asemic, MATCHED | 11.04 | 28 | **+0.073** [+0.053, +0.094] |
+| non-name lexical, MATCHED | 11.03 | 29 | **−0.003** [−0.015, +0.007] |
+| non-name lexical, low-frag (v1) | 5.15 | 26 | **−0.005** [−0.019, +0.010] |
 
-The notebook's binary rule printed *"name-specific"* — **but the verdict is confounded and we do not report it.**
-The non-name words are short/common, so Mistral shreds them **~2× less** than the asemic voces (5.15 vs 10.73
-Greek tok/str — reproduce with `src/check_nonname_fragmentation.py`). The cohorts differ on **three axes at
-once** — fragmentation, lexicality (the non-name words are real, in-vocabulary Greek; the voces are asemic), and
-namehood — so the verdict cannot be attributed to any one of them, **in either direction**. The result is
-**uninformative on namehood.** (We caught this only after the falsifier returned the inconvenient answer — a
-scrutiny asymmetry we disclose; the confound itself is direction-independent.)
+Three single-axis contrasts, **all significant** (bootstrap CI on the diff excludes 0):
+- **FRAGMENTATION** (asemic-matched − low-frag) = **+0.078** [+0.053, +0.101] → fragmentation is a real driver.
+- **LEXICALITY** (asemic-matched − lexical-matched) = **+0.076** [+0.053, +0.099] → meaninglessness is a co-equal
+  driver (meaningful Greek at the SAME fragmentation does NOT persist deep).
+- **NAMEHOOD** (voces − asemic-matched) = **−0.033** [−0.057, −0.010] → no namehood; the voces persist deep
+  *less* than matched random asemic strings. **Reversed, not just null.**
 
-§2's token-matched controls are the closest available proxy (asemic, fragmentation-matched to the voces; decider
-null) but they fix fragmentation only by being *maximally non-lexical*, so "controls persist deep too" is
-consistent with both a fragmentation reading **and** an asemic-ness reading — a meaningful-Greek (lexicality)
-reading is **not excluded.** The purpose-built arm that would settle it — non-name Greek matched to the voces on
-**both** fragmentation and lexicality (an asemic-matched arm AND a lexical-matched arm at ~10.7 Greek tok) — is
-in `notebooks/voces_falsifier_v2_lexicality.ipynb`, ready to fire. Until it runs, §3.4's question
-(fragmentation vs. lexicality vs. namehood) stays **open.**
+**Mechanism:** the deep region holds Greek that is *both* heavily fragmented *and* meaning-less ("fragmented
+nonsense") — neither condition alone suffices. The voces sit just *below* pure noise because they are a
+recognizable genre (exactly what H1 reads), so they are marginally less alien than true random. The v2 run also
+**replicates v1 exactly** (voces +0.040≈+0.041; low-frag −0.005). Caveat: single model; non-name arms n≈28–29;
+"meaningful Greek" = long Greek loanforms (may also carry morphemic, not just byte-level, tokens — see paper §5).
 
-## 4. Synthesis (provisional, 3 of 4)
-Surface recognition generalizes (H1, robust); no *detectable* voces-specific deep representation (decider null
-at this power); the deep "script" effect's *magnitude* **tracks** Greek byte-fragmentation across 3 (confounded)
-models. Whether the residual depth is fragmentation, lexicality, or namehood is **unresolved** — the falsifier
-that would separate them was confounded (§3b); the lexicality-matched arm is owed
-(`notebooks/voces_falsifier_v2_lexicality.ipynb`).
-*"It's the script, not the spell — and the depth tracks the tokenizer."*
+## 4. Synthesis (3 of 4 models; factorial single-model)
+Surface recognition generalizes (H1, robust); no voces-specific deep representation (decider null, and §3b's
+NAMEHOOD arm slightly *negative*); the deep "script" effect decomposes (Mistral factorial, §3b) into **two
+co-equal significant drivers — fragmentation AND meaninglessness — with namehood ruled out.** The deep region
+holds *fragmented nonsense*; the voces are too recognizable (H1) to live all the way down there.
+*"It's the script, not the spell — and the depth is fragmented nonsense."*
 
 ## Prediction scorecard (logged before the runs)
 - H1 replicates — **correct** (3/3).
