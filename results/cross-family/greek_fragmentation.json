@@ -1,0 +1,11 @@
+{
+  "note": "Greek tokens per pure-asemic-low-T vox (n=49), measured directly with each model's tokenizer (no weights). Tests the byte-fragmentation mechanism for the deep-Greek effect.",
+  "models": [
+    {"model": "Mistral-7B-v0.3", "vocab": 32768,  "greek_tok_per_vox": 10.76, "latin_tok_per_vox": 5.88, "deep_greek_gap_auth_minus_latin": 0.051, "decider_null": true},
+    {"model": "Qwen2.5-3B",      "vocab": 151643, "greek_tok_per_vox": 9.63,  "latin_tok_per_vox": 5.04, "deep_greek_gap_auth_minus_latin": 0.016, "decider_null": true},
+    {"model": "Gemma-2-9B",      "vocab": 256000, "greek_tok_per_vox": 7.69,  "latin_tok_per_vox": null, "deep_greek_gap_auth_minus_latin": 0.000, "decider_null": "latin p=0.007 unreplicated -> artifact"}
+  ],
+  "result": "Monotonic: more Greek fragmentation -> stronger deep-Greek name-adjacency. Precision (4-bit Gemma+Mistral at opposite ends) and size (3B/7B/9B) do not explain it. Direct measure, not vocab-size proxy.",
+  "caveats": ["n=3 models", "Greek-fragmentation co-varies with family + vocab size (no same-family-different-tokenizer control)", "non-name-Greek falsifier not yet run", "Llama (tiktoken 128k) is the 4th point"],
+  "gemma_tokenizer_source": "unsloth/gemma-2-9b (non-gated mirror, identical SentencePiece tokenizer to google/gemma-2-9b)"
+}
