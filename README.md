@@ -28,7 +28,8 @@ This is a **negative result, reported as a result.** It is, as the study's own d
 |------|----------|
 | `paper/its-the-script-not-the-spell.docx` | the working paper (ICMI WP No. 27, preprint draft) |
 | `paper/study-spec.md` | the full pre-registration-grade study spec (hypotheses, cohorts, confound catalog, falsifiers) |
-| `results/voces_v6_results.json` | **canonical results** — the seed-0 run + the `voces_specificity` decider object (what the figures read) |
+| `results/voces_v6_results.json` | **canonical results** — genuine end-to-end run-output (seed 0) incl. the `voces_specificity` decider object (what the figures read) |
+| `results/voces_v6_frozen_controls.json` | the exact model-generated stimuli — 76 self-contained token-matched **pairs** (`dtok`/`dsurp` deltas) + anchor cohorts; verify the isomorphism without rerunning extraction |
 | `results/voces_v5_results.json` | the same seed-0 run *before* the decider object was serialized (kept for provenance) |
 | `results/voces_v5_breakage.txt` | the auto-filled breakage / surprise log |
 | `results/fig1`, `fig2` | the two figures above, **regenerated from the JSON — no values hard-coded** (`src/make_figures.py`) |

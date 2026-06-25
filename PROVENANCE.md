@@ -6,9 +6,10 @@
 - A companion run on Qwen2.5-7B (4-bit) gave the same H1 result and H2 *shape*; the de-quantized 3B run is reported because it removes the quantization caveat from the headline.
 
 ## Canonical results & the decider object
-- **`results/voces_v6_results.json`** is canonical and is what `src/make_figures.py` reads. It is the seed-0 run above plus the `voces_specificity` object — the deep-layer voces-vs-token-matched-controls means and p-values that are the paper's decider.
-- The decider was computed by the v6 notebook's Cell 10f (`voces > controls`, deep layers) on the **same seed-0 activations** as the rest of the JSON. `voces_v5_results.json` is the identical run *before* that object was serialized — kept so the diff shows the decider was **added, not changed**.
-- Reported decider values (displayed precision): Greek voces +0.027 vs controls +0.020, *p* = 0.224, n = 49; Latin +0.004 vs +0.010, *p* = 0.886, n = 49. Running the v6 notebook end-to-end regenerates this object at full precision (seed 0 → identical). **No figure value is hand-entered** — `make_figures.py` reads them all from the JSON, and CI fails if the `voces_specificity` object is missing.
+- **`results/voces_v6_results.json`** is canonical and is what `src/make_figures.py` reads. It is **genuine end-to-end run-output** from the v6 notebook (Qwen2.5-3B fp16, seed 0): the full pipeline plus the `voces_specificity` object — the deep-layer voces-vs-token-matched-controls means and p-values that are the paper's decider.
+- **Full-precision decider (from the run, not assembled):** Greek voces **+0.02723** vs controls **+0.01973**, *p* = **0.22355**, n = 49; Latin **+0.00387** vs **+0.00998**, *p* = **0.88646**, n = 49. An earlier draft of this file carried hand-typed 3-decimal values pending this run; they matched to displayed precision and are now superseded by the run-output. **No figure value is hand-entered** — `make_figures.py` reads them all from the JSON, and CI fails if the `voces_specificity` object is missing.
+- `voces_v5_results.json` is the identical seed-0 run *before* the decider object was serialized — kept so the diff shows the decider was **added, not changed**.
+- **`results/voces_v6_frozen_controls.json`** archives the exact model-generated stimuli: 76 self-contained token-matched **pairs** (target + control strings, both token-counts and surprisals, and the `dtok`/`dsurp` deltas) plus the name/word/random anchor cohorts. An auditor verifies the token-isomorphism from this file alone, without rerunning extraction — archived-exactly, not merely regenerable.
 
 ## Match quality (the load-bearing control)
 - **Token count:** exact — mean |Δtokens| = 0.00, 76/76 exact-count matches. The tokenization confound is closed.
