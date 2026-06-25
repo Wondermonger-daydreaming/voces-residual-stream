@@ -50,7 +50,8 @@ So the headline is affirmative and the bound is sharp. **The model recognizes th
 on the surface, as form, across tokenizers — which is exactly the part of the magicians' form-not-meaning premise
 that was ever testable, and it holds.** What the model does *not* do is carry the voces as names of power in its
 depths; the "depth" that looked like aboutness was the tokenizer shredding Greek. Geometry bought adjacency —
-real, surface, general — not aboutness.
+real, surface, general — not aboutness: **recognition without representation** (§4.5), a knowing-that without a
+knowing-what, of which these meaning-evacuated strings are an unusually clean instance.
 
 ---
 
@@ -277,6 +278,42 @@ not the spell (it holds no deep representation of the voces as names) — and th
 the tokenizer.** Iteration 1's incidental side-finding is now a decomposed two-factor
 mechanism with a null where the romance lived — and the affirmative finding it always rode beside, the texture
 recognition, stands clearer for having the depth explained out from under it.
+
+### 4.5 Recognition without representation
+
+The two load-bearing results point in apparently opposite directions, and the tension is only apparent. **H1 is
+positive: the model recognizes barbarous-name-*ness*.** **The decider is null: the model holds no deep
+representation of a barbarous name *as a name*.** Stated as a contradiction, that reads as "it knows them and it
+doesn't." Stated precisely, it names a category the empirics have been circling all along — **recognition
+without representation.**
+
+The distinction is worth making sharp, because the two words are usually run together. *Recognition*, as we
+measure it, is a discriminative signature: a classifier can separate the voces from token-matched nonsense from
+the early-layer activations (H1). It is *recognition-that* — that this string is of the barbarous-name kind — and
+it is read off the surface, on sight, without anything further being built. *Representation*, as the decider
+probes for it, is a held, content-bearing deep state: a place where the network would carry the voces *as
+names-of-power*, distinguishably from fragmentation-matched controls, into the layers where abstraction lives. It
+is *representation-of* — a what, not just a that. **The model has the first and not the second.** It recognizes
+the category without ever representing a member of it as the thing the category is named for; and §3.4 shows it
+does not even hold them as *special* down there — at matched fragmentation the voces sit *below* the noise,
+precisely because recognition (which fires in both scripts, for anything name-textured) pulls them off the
+deep-fragmentation peak that pure-novelty occupies.
+
+This is not a deficiency of the model; it is a *kind* of knowing, and a common one. It is the structure of
+face-detection that registers *a face* before any identity is bound; of hearing *a sonnet* by its cadence before
+parsing a line; of knowing a friend's handwriting as theirs without reading the word. Each is genuine
+recognition with no semantic representation underneath — *knowing-that without knowing-what.* The voces are an
+unusually clean instance because they are *built* to have no "what": meaning-evacuated by design, they can only
+ever be recognized, never represented-as-meaning, and so they isolate the recognition-without-representation
+relation in pure form. That is also why they are the right probe, and why the magicians' premise survives the
+test exactly as far as it was ever testable: they said these words do their work by *form*, and a form-processor
+recognizes the form — fully, generally — while representing no name at all.
+
+We offer this as a *framing the present evidence supports*, not as a new measurement: the framing is what makes
+H1-positive and decider-null cohere rather than conflict. The empirical claims are §3.1–§3.4; §4.5 only names
+what they are jointly a portrait of. (It also marks the cleanest open question for future work — whether
+recognition-without-representation, isolated here in meaning-evacuated strings, characterizes a broader class of
+the model's early-layer category detectors.)
 
 ## 5. The honest hedges
 
