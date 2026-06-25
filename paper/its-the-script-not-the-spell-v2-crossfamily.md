@@ -1,6 +1,6 @@
-# It's the Script, Not the Spell — and the Depth Is Fragmented Nonsense
+# The Texture of the Barbarous Name
 
-### A Cross-Family Study: Surface Recognition Generalizes; the Deep "Greek" Effect Needs Both Fragmentation *and* Meaninglessness; Namehood Is Null
+### A Cross-Family Study of the Voces Magicae: A Form-Processor Recognizes Them on Sight — the Recognition Is Surface (Real, General), Not Aboutness; and the Deep "Greek" Effect Was the Tokenizer, Not the Spell
 
 *Self-published preprint, **iteration 2** (cross-family); non-peer-reviewed working draft.*
 *Author: Tomás Pavan. Designed and analyzed in dialogue with two Claude Opus 4.8 instances (claude.ai —
@@ -22,54 +22,55 @@ design; Claude Code — build & analysis). See CONTRIBUTIONS.md and git history.
 
 ## Abstract
 
-We use the *voces magicae* — the "barbarous names" of the Greek Magical Papyri, strings their own tradition
-holds to be efficacious through *form* rather than meaning — as a clinical, meaning-evacuated probe of how a
-transformer represents the boundary between language, name, and ornament. Iteration 1 (Qwen2.5, single family)
-found surface recognition of barbarous names (H1), no voces-specific *deep* representation, and an incidental
-side-finding: name-adjacency persisted deeper in Greek script than in Latin, read as "Greek-script processing"
-— *it's the script, not the spell.*
+The *voces magicae* — the "barbarous names" of the Greek Magical Papyri — are language built to be efficacious
+through *form* rather than meaning: strings whose tradition locates their power in their shape, not their
+reference. That premise is unexpectedly testable. A transformer processes the *form* of tokens with no native
+semantics, so it is exactly the instrument for the question this study actually asks: **is "barbarous-name-ness"
+a real perceptual category to a pure form-processor — can a model recognize the *texture* of a barbarous name?**
 
-**This iteration runs the identical pipeline across three tokenizer families** — Qwen (BPE, 152k), Gemma-2
-(SentencePiece, 256k), Mistral (SentencePiece, 32k) — and then resolves the deep effect with a within-model
-factorial. **(1) H1 replicates cleanly in all three** (peak 0.89–0.96, early-layer, ~+0.4 over a frequency
-baseline), and holds even where the model finds the voces *more* surprising than its controls. **(2) No
-voces-specific deep representation in any family**: the decider is null in Qwen and Mistral; the lone significant
-Gemma cell (Latin, p=0.007) is unreplicated and run-variable under 4-bit. **(3) The deep-Greek persistence
-*tracks Greek byte-fragmentation* across the three models** — Mistral (10.76 Greek tokens/vox, gap +0.051) >
-Qwen (9.63, +0.016) > Gemma (7.69, ~0.000) — a monotone relationship precision and size do not explain, though it
-co-varies with family and vocab (n=3). **(4) A matched-cohort factorial (Mistral, replicated on Gemma) decomposes the deep effect
-into two co-equal drivers and a null.** Holding Greek-token fragmentation fixed at ~11 tokens, with bootstrap
-95% CIs: *fragmentation* drives it (asemic Greek at 11 tokens persists deep, +0.073; at 5 tokens it does not,
-−0.005; Δ=+0.078, CI excludes 0); *meaninglessness* drives it just as strongly (asemic Greek persists, +0.073,
-but real-word Greek at the same fragmentation does not, −0.003; Δ=+0.076); and *namehood* is **absent — indeed
-reversed**: the actual voces persist deep *significantly less* than fragmentation-matched random asemic strings
-(Δ=−0.033, CI [−0.057, −0.010]). The whole structure **replicates on Gemma-2-9B**, and a follow-up factorial
-(v3) that splits meaning from frequency via the model's own surprisal shows — **in both models** — the second
-driver is **meaning, not familiarity** (FAMILIARITY n.s. in both; MEANING significant in both) — "fragmented
-nonsense" earned, not assumed.
+**The answer is yes, and it is robust.** A model separates barbarous names from token-matched nonsense cleanly,
+at the early layers, far above a frequency baseline (**H1**), and this **replicates across three tokenizer
+families** — Qwen (BPE, 152k), Gemma-2 (SentencePiece, 256k), Mistral (SentencePiece, 32k); peaks 0.89–0.96 —
+holding even where the model finds the voces *more* surprising than their controls. Texture-recognition is a
+transformer property, not a single-tokenizer artifact. **The form the magicians cared about is a real,
+detectable thing, and a form-machine detects it on sight.** This is the finding; everything else *bounds* it.
 
-The picture is sharper and more mechanistic than iteration 1's. **The only effect robust to a change of
-tokenizer is surface texture-recognition. The deep "name-adjacent" region holds *fragmented nonsense* —
-sequences that are *both* heavily byte-fragmented *and* unfamiliar (asemic / novel / low-frequency); neither
-condition alone suffices. The barbarous names are not special there; they sit just *below* pure noise, because
-they are a recognizable genre (the very thing H1 detects), which makes them marginally less alien to the model
-than true random.** Geometry bought adjacency, not aboutness; the adjacency is surface; and the depth, where it
-appeared, was the place the model parks unfamiliar, over-fragmented Greek — not names, and not the tokenizer
-alone.
+How surface is that recognition, and is there anything underneath? **The recognition is surface — it does not
+deepen into a representation of the voces *as names*.** The voces-vs-control decider is null in two of three
+families (the lone Gemma exception is unreplicated and 4-bit-unstable). And the one place name-adjacency *seemed*
+to persist deep — iteration 1's "the grain runs deeper in Greek" side-finding — turns out to be the
+**tokenizer**, not the spell: across the three models its magnitude tracks how badly the tokenizer byte-fragments
+Greek (Mistral 10.76 tok/vox, +0.051 > Qwen 9.63, +0.016 > Gemma 7.69, ~0.000), and a matched-cohort factorial
+(Mistral, replicated on Gemma) decomposes it into **fragmentation + meaninglessness** — frequency and
+familiarity *ruled out* by a surprisal-controlled split in both models — with *namehood* absent, indeed slightly
+reversed (the voces persist *less* deep than fragmentation-matched noise, precisely because they are a
+recognizable genre).
+
+So the headline is affirmative and the bound is sharp. **The model recognizes the texture of a barbarous name —
+on the surface, as form, across tokenizers — which is exactly the part of the magicians' form-not-meaning premise
+that was ever testable, and it holds.** What the model does *not* do is carry the voces as names of power in its
+depths; the "depth" that looked like aboutness was the tokenizer shredding Greek. Geometry bought adjacency —
+real, surface, general — not aboutness.
 
 ---
 
 ## 1. The question
 
 The voces magicae are language deliberately built to operate *without reference* — efficacious, in the
-tradition's theory, through correct form, not denotation. This rhymes with a transformer: a system that
-processes the *form* of tokens with no native concept of what they point to. The question is not whether the
-magicians were right. It is whether a model recognizes the *texture* of a barbarous name, how deep that runs,
-and — the new question for this iteration — **whether any of it is a property of transformers, or of one
-tokenizer's idiosyncrasies.** A second question rides along, and it turned out to be the sharp one: when a study
-builds a falsifier to attack its own favorite reading, what does it do when the falsifier returns the
-inconvenient answer? §3.4 and §6 are the honest record — including the falsifier we first built *confounded*,
-caught, and rebuilt.
+tradition's theory, through correct *form*, not denotation. This is not a claim about causal magic that an
+experiment could adjudicate, and we do not try; **it is a claim about a class of linguistic objects — that there
+are utterances whose signature is in their shape, independent of meaning.** And *that* is testable, because a
+transformer is precisely a machine that processes the form of tokens with no native concept of what they point
+to. So the question is not whether the magicians' spells *work*. It is the one the tradition's own
+form-not-meaning premise hands us: **is "barbarous-name-ness" a real perceptual category to a pure form-processor
+— does a model recognize the *texture* of a barbarous name?** And the two follow-ups that make the answer
+precise: *how deep* does that recognition run (is it surface texture, or something more like aboutness?), and
+**is it a property of transformers, or of one tokenizer's idiosyncrasies?** — the new question this cross-family
+iteration exists to settle.
+
+A third question rode along and turned out to be the sharp methodological one: when a study builds a falsifier to
+attack its own favorite reading, what does it do when the falsifier returns the inconvenient answer? §3.4 and §6
+are the honest record — including the falsifier we first built *confounded*, caught, and rebuilt.
 
 ## 2. Method (multi-model)
 
@@ -246,35 +247,44 @@ name-adjacent in a way the Latin does not — i.e. for a heavily-fragmented, *un
 Recognition collapses the asymmetry. That is the same H1↔depth coupling, now visible in the magnitudes: what
 makes a string recognizable (in either script) is what keeps it off the deep-fragmentation peak.
 
-So §3.4 does what §3.3 could not: it shows fragmentation is necessary-but-not-sufficient, names a second
-necessary factor (novelty/unfamiliarity), and rules namehood out — not as an undetected null, but as a *measured
-reversal*. (Caveats: two models now (Mistral, Gemma); the two non-name arms are n≈28–34; the lexical arm bundles
-meaning with frequency/familiarity (§5); and the name-likeness metric, the deep-band, and the single-seed cohorts are all
-limitations §5 lists. The factorial wants a second model before it generalizes.)
+So §3.4 does what §3.3 could not: it shows fragmentation is necessary-but-not-sufficient, names the second factor
+as **meaninglessness** (the v3 split rules out frequency/familiarity in both models), and rules namehood out —
+not as an undetected null, but as a *measured reversal*. (Caveats: the non-name arms are n≈28–34; "meaning"
+co-travels with byte-vs-morphemic tokenization (§5); the name-likeness metric, the deep-band, and the
+single-seed cohorts are all limitations §5 lists.)
 
-## 4. What survives, and what the depth was
+## 4. What the model does — and the bound on it
 
-- **Surface texture-recognition (H1): survives.** Robust across three tokenizer families, stated without a hedge.
-- **A deep voces representation (the spell): not found, and reversed where cleanest.** Decider null in 2 of 3;
-  and at matched fragmentation+lexicality the voces persist deep *less* than random asemic strings (§3.4).
-- **The deep "script" effect: fragmented nonsense.** Two co-equal, individually-significant drivers — **byte
-  fragmentation** (§3.3 across models, §3.4 within Mistral) and **novelty/unfamiliarity** (§3.4; a bundle of
-  meaninglessness + low frequency + byte-vs-morphemic tokenization, not yet separated) — neither sufficient
-  alone. The deep region holds Greek that is both over-fragmented and unfamiliar.
+The affirmative result first, because it is the result:
+- **The model recognizes the texture of a barbarous name (H1): yes, robustly.** Linearly separable from
+  token-matched nonsense at the early layers, far above a frequency baseline, across three tokenizer families.
+  *Texture-recognition is a transformer property.* The form the magicians located their power in is a real,
+  perceptible category, and a pure form-processor perceives it. This is stated without a hedge.
 
-*"It's the script, not the spell"* now reads, fully: **the surface recognition is real and general; there is no
-deep representation of the voces as names (it is null, even slightly reversed); and the deep "script" effect is
-the model holding fragmented, unfamiliar Greek — the tokenizer's shredding is one of its two necessary
-ingredients, not the whole story.** Iteration 1's incidental side-finding is now a decomposed two-factor
-mechanism with a null where the romance lived (with the second factor still a familiarity-bundle, §5).
+And the bound that makes "recognizes the texture" precise:
+- **The recognition is surface, not aboutness.** It is read off the early layers and does *not* deepen into a
+  representation of the voces *as names*: the decider is null in 2 of 3 families, and where the test is cleanest
+  the voces persist deep *less* than matched noise (§3.4). The model registers the *form*; it does not hold the
+  *name*.
+- **The deep "Greek" effect was the tokenizer, not the spell.** Iteration 1's "the grain runs deeper in Greek"
+  decomposes (§3.3 across models, §3.4 within Mistral and Gemma) into **byte-fragmentation + meaninglessness** —
+  the deep region holds Greek that is both over-fragmented and meaning-less, and the voces sit just *below* pure
+  noise there because they are recognizable. The "depth" that looked like aboutness was form-processing of
+  shredded script.
+
+So the study's own title resolves: **it's the script (the model recognizes the *form*, cleanly and generally) —
+not the spell (it holds no deep representation of the voces as names) — and the depth that confused the two was
+the tokenizer.** Iteration 1's incidental side-finding is now a decomposed two-factor
+mechanism with a null where the romance lived — and the affirmative finding it always rode beside, the texture
+recognition, stands clearer for having the depth explained out from under it.
 
 ## 5. The honest hedges
 
-- **The factorial now holds in two models (Mistral + Gemma), but the meaning/familiarity split is still owed.**
-  §3.4's decomposition replicates on Gemma (all three contrasts significant, same-signed) — so it is not a
-  single-model artifact. What both models share, and what v3 fixes, is that the "lexicality" arm bundles meaning
-  with frequency/familiarity; the v3 notebook splits that by the model's own surprisal. The non-name arms are
-  n≈28–34 (bootstrap CIs throughout); the cross-model fragmentation *ordering* (§3.3) is still only three
+- **The deep decomposition holds in two models, and the meaning/familiarity split is settled.** §3.4's
+  decomposition replicates on Gemma (all contrasts significant, same-signed), and v3's surprisal-controlled split
+  rules out frequency/familiarity in *both* models — so the second factor is meaning, not a single-model or
+  frequency artifact. The non-name arms are n≈28–34 (bootstrap CIs throughout); the cross-model fragmentation
+  *ordering* (§3.3) is still only three
   confounded points.
 - **The "lexicality" bundle — now split (v3): the factor is meaning, not familiarity.** The v2 lexical-matched
   cohort was high-frequency international loanwords (ΦΙΛΟΣΟΦΙΑ, ΔΗΜΟΚΡΑΤΙΑ…), so the +0.076 effect confounded
@@ -326,16 +336,18 @@ inconvenient answer, and the thesis-confirming results did not get the same audi
 the confession, and then did the thing the confession demands: **rebuilt the falsifier matched** (the §3.4
 factorial), and let it speak. It returned an answer better than either the prediction or its confounded first
 draft: not "pure fragmentation," not "names," but **two factors and a reversal** — fragmentation *and*
-novelty/unfamiliarity drive the depth, and the names sit below the noise. (The second factor is still a
-familiarity-bundle the next cohort must split, §5 — the discipline that produced §3.4 is not finished with it.)
+meaninglessness drive the depth, and the names sit below the noise. (v3 then split the second factor from
+frequency and confirmed it in two models — the discipline that produced §3.4 finished the job it started.)
 
-So the author's headline predictions were **falsified three times**, the third was a check on the study's own
-*apparatus*, caught late and then *repaired* rather than spun. The cross-family iteration's yield is larger and
-sturdier than iteration 1's: a robust H1, a voces-specificity null that turns slightly negative where cleanest,
-a provisional cross-model fragmentation correlation, and a within-model decomposition of the deep effect into
-fragmentation + novelty. The deflation holds, deeper than before: **the depth was never the spell, and never
-quite "the tokenizer" alone — it was the place the model keeps fragmented, unfamiliar Greek, and the barbarous
-names are too recognizable to live all the way down there.**
+So the author's headline predictions about the *deep* effect were **falsified three times**, the third a check
+on the study's own *apparatus*, caught late and then *repaired* rather than spun — and all of that churn was in
+service of the one claim that never wavered. **The affirmative result was steady from iteration 1 and only got
+sturdier: the model recognizes the texture of a barbarous name, and this iteration showed it does so across
+three tokenizer families — a property of transformers, not of one tokenizer.** Everything the deep-layer work
+overturned was overturned *around* that fixed point, and in service of stating it precisely: the recognition is
+surface form, not deep aboutness; what looked like aboutness in the depths was the tokenizer fragmenting Greek.
+The magicians said these words do their work by *form*. A form-machine reads the form on sight. That part of the
+old theory was always the testable part, and it held.
 
 ---
 

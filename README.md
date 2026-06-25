@@ -1,12 +1,14 @@
-# It's the Script, Not the Spell
+# The Texture of the Barbarous Name
 
-**A voces-negative result on deep representation in language models, and what survives it.**
+**Can a language model recognize the *texture* of a barbarous name? Yes — cleanly, on sight, across tokenizer families. Here is exactly how surface that recognition is, and what the deep "Greek" effect actually was.**
 
-This repository studies how a transformer represents the *voces magicae* — the "barbarous names" of the Greek Magical Papyri (PGM), strings their own tradition holds to be efficacious through *form* rather than meaning. They are a clinical, meaning-evacuated probe of how a model encodes the boundary between language, name, and ornament: language deliberately built to operate *without reference*, used to probe a system that processes the form of tokens with no native concept of what they point to.
+This repository studies how a transformer represents the *voces magicae* — the "barbarous names" of the Greek Magical Papyri (PGM), strings their own tradition holds to be efficacious through *form* rather than meaning. That premise is the testable one: a transformer processes the *form* of tokens with no native semantics, so it is the right instrument to ask whether "barbarous-name-ness" is a real perceptual category to a pure form-processor. (Not whether the magic *works* — whether the *form* the magicians cared about is a real, detectable thing.)
 
-> **TL;DR.** A 7B-class model (Qwen2.5) *does* recognize the orthographic **texture** of a barbarous name — cleanly, on sight, at the embedding/early layers (H1: ~0.89–0.94 separable from token-matched nonsense, beyond a surprisal baseline, robust to a within-family scale change (3B↔7B) and de-quantization; cross-family untested). But that recognition is **shallow**: it washes out by mid-network. An intermediate run suggested name-likeness *persists deep in Greek script*; a control dissolved it — token-matched **nonsense** in Greek persists deep just as much as the voces do (voces +0.027 vs controls +0.020; *p* = 0.224, n = 49). The deep-Greek effect is a fact about **Greek-script processing**, not about the voces. Geometry bought adjacency, not aboutness; the adjacency is surface; the depth was Greek, not magic.
+> **TL;DR — the affirmative finding.** A model **recognizes the orthographic texture of a barbarous name** — cleanly, on sight, at the early layers, far above a frequency baseline (H1: peaks 0.89–0.96) — and this **replicates across three tokenizer families** (Qwen BPE-152k, Gemma SP-256k, Mistral SP-32k), even where the model finds the voces *more* surprising than their controls. **Texture-recognition is a transformer property, not a single-tokenizer artifact.** The form the magicians located their power in is real and a form-machine detects it.
+>
+> **The bound that makes it precise.** The recognition is **surface**: it does *not* deepen into a representation of the voces *as names* (the voces-vs-control decider is null in 2 of 3 families). And the one place name-adjacency *seemed* to persist deep was the **tokenizer**, not the spell — its magnitude tracks how badly Greek byte-fragments, and a matched-cohort factorial (Mistral, replicated on Gemma) decomposes it into **fragmentation + meaninglessness** (frequency ruled out by a surprisal-controlled split, both models), with *namehood* absent — slightly reversed, even: the voces persist *less* deep than matched noise, because they are a recognizable genre. Geometry bought adjacency — real, surface, general — not aboutness.
 
-This is a **negative result, reported as a result.** It is, as the study's own design anticipated, a pointed comment on what subword tokenization does to exactly the language the magicians thought most powerful.
+This is **an affirmative result with a sharp bound**: the model recognizes the form (the part of the magicians' form-not-meaning premise that was ever testable), and the "depth" that looked like aboutness was subword tokenization shredding exactly the script the magicians thought most powerful.
 
 ---
 
@@ -123,7 +125,7 @@ The deep "name-adjacent" region holds **fragmented nonsense** (both conditions n
 recognizable (the very thing H1 detects) to live all the way down there. Read
 [`results/cross-family/FINDINGS.md`](results/cross-family/FINDINGS.md) and the iteration-2 paper
 [`paper/its-the-script-not-the-spell-v2-crossfamily.md`](paper/its-the-script-not-the-spell-v2-crossfamily.md):
-*"It's the Script, Not the Spell — and the Depth Is Fragmented Nonsense."*
+*"The Texture of the Barbarous Name" — the model recognizes the form across tokenizer families (the affirmative result); the recognition is surface, not aboutness; and the deep "Greek" effect was the tokenizer, not the spell.*
 
 - **Cross-family replication — DONE 3/4** (Llama-3.1-8B pending Meta's gate). Harness: `notebooks/voces_crossfamily.ipynb` reuses every science cell unchanged and only swaps the model; the model-tagged results JSONs are in `results/cross-family/`.
 - **The matched factorial — RUN (Mistral), and it RESOLVES the deep effect.** The v1 falsifier was confounded (its non-name cohort fragmented ~2× less than the voces *and* was lexical — `src/check_nonname_fragmentation.py` reproduces the 2× gap). Rebuilt as a factorial holding Greek-token fragmentation fixed at ~11 tokens with bootstrap 95% CIs (`notebooks/voces_falsifier_v2_lexicality.ipynb`), it decomposes the deep-Greek effect into **two co-equal, individually-significant drivers and a null**: **FRAGMENTATION** (+0.078) — asemic Greek persists deep when fragmented, not when short; **LEXICALITY** (+0.076) — *meaningful* Greek does **not** persist even at matched fragmentation; **NAMEHOOD** (−0.033, significant) — the voces persist deep *less* than matched random asemic strings. The deep region holds **fragmented nonsense** (both conditions necessary); the names are too recognizable (H1) to live all the way down. Replicates v1 exactly (voces +0.040 vs +0.041). See `results/cross-family/FINDINGS.md` §3b. *The confounded first falsifier was disclosed, then repaired — and the repaired version returned a better answer than the prediction.*
@@ -143,7 +145,7 @@ Code: MIT. Paper text and figures: CC BY 4.0. PGM source material is scholarship
 ```bibtex
 @techreport{voces2026script,
   author = {Pavan, Tomás},
-  title  = {It's the Script, Not the Spell: A Voces-Negative Result on Deep Representation in Language Models},
+  title  = {The Texture of the Barbarous Name: A Form-Processor Recognizes the Voces Magicae Across Tokenizer Families},
   year   = {2026},
   note   = {Self-published, non-peer-reviewed preprint draft. Designed and analyzed in dialogue with two
             Claude Opus 4.8 instances --- one on claude.ai (design) and one on Claude Code (build \&
