@@ -58,3 +58,13 @@ measured fragmentation artifact with a dose-response. *"It's the script, not the
    Yes → pure fragmentation-clustering, not namehood. Most decisive next test.
 2. **Llama-3.1-8B** (tiktoken 128k) — 4th point. Predicted: Greek ≈ 9–10 tok/vox, deep gap ≈ Qwen's +0.016.
 3. **fp16 Gemma** — confirm the p=0.007 dissolves un-quantized.
+
+
+## Addendum — Gemma decider is run-unstable (4-bit jitter), reinforcing the artifact call
+A second seed-0 Gemma run (`voces_xfam-gemma-2-9b_rerun_results.json`) gave a *different* Latin decider
+(p=0.032 vs the first run's p=0.007) and a different H1-peak layer (L4 vs L7) — despite identical seed and model.
+This is 4-bit quantization non-determinism (bitsandbytes/cuDNN are not bit-reproducible). A real, stable deep
+representation would not move from p=0.007 to p=0.032 across two identical runs. **This further confirms the lone
+significant Gemma cell is quantization jitter, not a voces-specific effect.** The non-name-Greek falsifier (Cell
+10g) ran on this re-run but is uninformative on Gemma (voces deep gap +0.001 ≈ non-name -0.000 ≈ 0 — Gemma has no
+deep-Greek effect to falsify). The decisive falsifier run is **Mistral** (strongest deep-Greek effect), pending.
