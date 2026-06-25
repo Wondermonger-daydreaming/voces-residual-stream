@@ -32,4 +32,29 @@ All external references were checked against live sources on 2026-06-24:
 - Sofroniew et al. 2026 (Emotion Concepts, Transformer Circuits, arXiv:2604.07729) — verified.
 - Lu et al. 2026 (The Assistant Axis, arXiv:2601.10387) — verified.
 - Betz (ed.) 1992 (Greek Magical Papyri in Translation, 2nd ed., Univ. of Chicago Press) — verified.
-- Hwang 2026 (Be Not Afraid, ICMI WP 26) — verified to exist; **self-published, non-peer-reviewed**; cited as such. This study descends from its method.
+- Hwang 2026 (*Be Not Afraid*) — verified to exist; **self-published, non-peer-reviewed**; cited as such. This study descends from its method.
+
+## Disclosed data anomaly (cross-family, 4-bit Gemma re-run)
+
+The Gemma **re-run** artifact (`results/cross-family/voces_xfam-gemma-2-9b_rerun_results.json`) carries an
+unexplained value anomaly: its **Greek decider p-value is byte-identical to Mistral's** —
+`0.2659000459593744` — even though the two were computed from different underlying means (Gemma vox_deep 0.0068
+vs Mistral 0.0598). Identical analytic p-values from different data cannot arise from independent computation;
+this indicates a **value-bleed / results-assembly bug** in the 4-bit re-run output (a cached/global value
+surviving across runs in the same kernel, most likely). It was caught in adversarial review (2026-06-25).
+
+Scope of impact: **the paper's headline cells are unaffected** — Mistral's decider p is read from the Mistral
+file, and the paper's Gemma column uses the *original* Gemma run (Greek p=0.094), not the re-run. The re-run is
+cited only for the Latin-cell run-variance (0.007→0.032). We nonetheless **do not rely on the re-run's absolute
+p-values**, and treat the 4-bit Gemma decider as unreliable pending an **fp16 re-run**
+(`notebooks/voces_falsifier_v2_lexicality.ipynb` pointed at `google/gemma-2-9b` re-runs it cleanly).
+
+## The non-name falsifier and its purpose-built successor
+
+The iteration-2 non-name-Greek falsifier (`nonname_falsifier` in the Mistral results) is **uninformative**: its
+cohort differs from the voces on fragmentation (~2×), lexicality (real vs asemic Greek), and namehood at once
+(see paper §3.4, `src/check_nonname_fragmentation.py`). The fragmentation confound was audited only *after* the
+falsifier returned the thesis-threatening verdict — a scrutiny asymmetry disclosed in the paper; the confound is
+direction-independent, so the verdict is invalid whichever way it fell. The purpose-built replacement —
+fragmentation- **and** lexicality-matched non-name cohorts with bootstrap CIs — is
+`notebooks/voces_falsifier_v2_lexicality.ipynb`, built but not yet run.

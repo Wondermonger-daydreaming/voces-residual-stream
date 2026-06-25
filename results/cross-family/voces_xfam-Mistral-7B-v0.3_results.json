@@ -214,5 +214,10 @@
       "n": 49
     }
   },
+  "nonname_falsifier": {
+    "voces_deep_gap": 0.04108203331227688,
+    "nonname_deep_gap": -0.004783536252730033,
+    "ratio": -0.11643864402642723
+  },
   "version": "xfam-Mistral-7B-v0.3"
 }
