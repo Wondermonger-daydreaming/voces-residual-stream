@@ -75,15 +75,23 @@ FRAGMENTATION +0.031 [0.016, 0.046], LEXICALITY +0.039 [0.028, 0.051], NAMEHOOD 
 So the decomposition is **not single-model**. Caveat that survives: the lexical arm bundles meaning with
 frequency/familiarity (v3 notebook splits it by the model's own surprisal); non-name arms n≈28–34.
 
-**v3 splits the bundle → the second factor is MEANING, not familiarity (Gemma; `..._v3-separation_...json`).**
-Splitting the real-Greek pool by the model's own surprisal into familiar (2.4 nats) vs unfamiliar (4.0 nats):
-FRAGMENTATION +0.018 [0.005,0.031] sig · **FAMILIARITY −0.002 [−0.016,0.013] n.s.** · **MEANING +0.020
-[0.009,0.031] sig** · NAMEHOOD −0.023 [−0.036,−0.011] sig. Familiar and unfamiliar *meaningful* Greek both fail
-to persist (≈+0.008); only *meaningless* asemic Greek persists (+0.027). So frequency/familiarity is ruled out —
-"fragmented nonsense" is **earned**. Bonus: asemic deep gap across 5 seeds sd=0.0024 (single-seed concern dead);
-and *absolute* Greek name-likeness shows meaningful Greek IS deep-name-like in BOTH scripts (so its Greek−Latin
-gap is ~0 via recognition, not un-name-likeness) — the gap is a script-asymmetry recognition collapses. Mistral
-v3 (a one-cell re-run) is the natural confirmation.
+**v3 splits the bundle → the second factor is MEANING, not familiarity — confirmed in BOTH models.**
+Splitting the real-Greek pool by the model's own surprisal into familiar vs unfamiliar (both meaningful, both
+frag-matched):
+
+| contrast (v3) | Mistral | Gemma |
+|---|---|---|
+| FRAGMENTATION | +0.067 [0.050,0.083] sig | +0.018 [0.005,0.031] sig |
+| **FAMILIARITY** | +0.016 [−0.010,0.042] **n.s.** | −0.002 [−0.016,0.013] **n.s.** |
+| **MEANING** | +0.051 [0.025,0.076] sig | +0.020 [0.009,0.031] sig |
+| NAMEHOOD | −0.033 [−0.047,−0.018] sig | −0.029 [−0.044,−0.011] sig |
+
+Familiar and unfamiliar *meaningful* Greek persist equally (FAMILIARITY null in both); only *meaningless* asemic
+Greek persists (MEANING sig in both). Frequency/familiarity is **ruled out in two tokenizer families** —
+"fragmented nonsense" is **earned**. Bonus: asemic deep gap stable across 5 seeds (sd 0.008 Mistral / 0.002
+Gemma — single-seed concern dead); *absolute* Greek name-likeness shows meaningful Greek IS deep-name-like in
+BOTH scripts (Greek−Latin gap ~0 via recognition, not un-name-likeness) — the gap is a script-asymmetry that
+recognition collapses (the H1↔depth coupling, in the magnitudes).
 
 ## 4. Synthesis (3 of 4 models; factorial single-model)
 Surface recognition generalizes (H1, robust); no voces-specific deep representation (decider null, and §3b's
