@@ -40,18 +40,20 @@ Qwen (9.63, +0.016) > Gemma (7.69, ~0.000) — a monotone relationship precision
 co-varies with family and vocab (n=3). **(4) A matched-cohort factorial (Mistral) decomposes the deep effect
 into two co-equal drivers and a null.** Holding Greek-token fragmentation fixed at ~11 tokens, with bootstrap
 95% CIs: *fragmentation* drives it (asemic Greek at 11 tokens persists deep, +0.073; at 5 tokens it does not,
-−0.005; Δ=+0.078, CI excludes 0); *meaninglessness* drives it just as strongly (asemic Greek persists, +0.073,
-but *meaningful* Greek at the same fragmentation does not, −0.003; Δ=+0.076); and *namehood* is **absent —
-indeed reversed**: the actual voces persist deep *less* than fragmentation-matched random asemic strings
-(Δ=−0.033, CI [−0.057, −0.010]).
+−0.005; Δ=+0.078, CI excludes 0); *novelty/unfamiliarity* drives it just as strongly (asemic Greek persists,
++0.073, but *familiar real-word* Greek at the same fragmentation does not, −0.003; Δ=+0.076 — a bundle of
+meaninglessness, low frequency, and tokenization-quality we do not yet separate, §5); and *namehood* is
+**absent — indeed reversed**: the actual voces persist deep *significantly less* than fragmentation-matched
+random asemic strings (Δ=−0.033, CI [−0.057, −0.010]).
 
 The picture is sharper and more mechanistic than iteration 1's. **The only effect robust to a change of
 tokenizer is surface texture-recognition. The deep "name-adjacent" region holds *fragmented nonsense* —
-sequences that are *both* heavily byte-fragmented *and* meaning-less; neither condition alone suffices. The
-barbarous names are not special there; they sit just *below* pure noise, because they are a recognizable genre
-(the very thing H1 detects), which makes them marginally less alien to the model than true random.** Geometry
-bought adjacency, not aboutness; the adjacency is surface; and the depth, where it appeared, was the place the
-model parks meaning-evacuated, over-fragmented Greek — not names, and not the tokenizer alone.
+sequences that are *both* heavily byte-fragmented *and* unfamiliar (asemic / novel / low-frequency); neither
+condition alone suffices. The barbarous names are not special there; they sit just *below* pure noise, because
+they are a recognizable genre (the very thing H1 detects), which makes them marginally less alien to the model
+than true random.** Geometry bought adjacency, not aboutness; the adjacency is surface; and the depth, where it
+appeared, was the place the model parks unfamiliar, over-fragmented Greek — not names, and not the tokenizer
+alone.
 
 ---
 
@@ -158,7 +160,7 @@ fraction, instruction-tuning**; we have no same-family-different-tokenizer contr
 fragmentation, and falls to ~0 where Greek tokenizes cleanly. §3.4 turns this from a correlation into a
 *decomposition* — and finds fragmentation is necessary but **not sufficient**.
 
-### 3.4 The matched factorial — fragmentation *and* meaninglessness, but not names
+### 3.4 The matched factorial — fragmentation *and* novelty, but not names
 
 The most decisive test named in iteration 1's future work was the non-name-Greek falsifier. The first attempt
 (`nonname_falsifier`) compared the voces against short common Greek words and printed *"name-specific"* — but its
@@ -180,27 +182,34 @@ Three contrasts, each a single isolated axis, **all significant** (bootstrap CI 
 - **FRAGMENTATION** (asemic-matched − low-frag): **+0.078** [+0.053, +0.101]. Among asemic strings, going from 5
   to 11 Greek tokens turns the deep gap from ~0 to +0.073. **Fragmentation is a real driver** — the cross-model
   correlation (§3.3) now has a within-model demonstration, lexicality held constant.
-- **LEXICALITY** (asemic-matched − lexical-matched): **+0.076** [+0.053, +0.099]. At the *same* fragmentation,
-  asemic Greek persists deep (+0.073) but *meaningful* Greek does not (−0.003). **Meaninglessness is a co-equal
-  driver** — the "the model processes meaningful Greek differently" reading the prior draft could not exclude is
-  now **confirmed**, and at essentially the same magnitude as fragmentation.
+- **FAMILIARITY / LEXICALITY** (asemic-matched − lexical-matched): **+0.076** [+0.053, +0.099]. At the *same*
+  fragmentation, asemic Greek persists deep (+0.073) but the real-word cohort does not (−0.003). A second factor
+  beyond fragmentation is real and co-equal in magnitude. **But this axis is a bundle, not pure "meaning."** The
+  lexical cohort (ΦΙΛΟΣΟΦΙΑ, ΔΗΜΟΚΡΑΤΙΑ, ΑΝΘΡΩΠΟΛΟΓΙΑ…) is *meaningful, high-frequency, and cross-lingually
+  familiar* — international loanwords the model has seen across many languages — and also tends to receive
+  *morphemic* subword tokens where the asemic strings get byte-fragments at the same count. So the honest name
+  for the factor is **novelty / unfamiliarity** (which subsumes meaninglessness, low frequency, and
+  morphemic-vs-byte tokenization); the experiment **cannot yet separate "meaningless" from "merely unfamiliar."**
+  The clean separation needs a *meaningful-but-unfamiliar* Greek cohort (rare/archaic words, not loanwords) — the
+  v3 arm owed in §5.
 - **NAMEHOOD** (voces − asemic-matched): **−0.033** [−0.057, −0.010]. With fragmentation *and* lexicality both
   matched (all asemic, all ~11 tokens), the actual voces persist deep **significantly *less*** than random
   asemic strings. **There is no namehood effect; it is reversed.**
 
 The mechanism the factorial assembles: **the deep "name-adjacent" region is where the model parks Greek that is
-*both* heavily byte-fragmented *and* meaning-less.** Neither condition alone gets a string there — short asemic
-Greek (low-frag) does not persist; fragmented *meaningful* Greek does not persist. Only fragmented nonsense does.
-And the NAMEHOOD reversal closes the loop with §3.1: the voces are not maximal nonsense to the model — they are a
-*recognizable genre* (H1 reads their texture cleanly), so they are marginally *less* alien than true random
-strings, and they fall just *below* pure noise on exactly the meaninglessness axis that drives the depth. The
-same recognizability that makes H1 a robust positive at the surface makes the names *less* deep-fragment-adjacent
-than the random controls.
+*both* heavily byte-fragmented *and* unfamiliar** (asemic / novel / low-frequency — see the bundle caveat above).
+Neither condition alone gets a string there — short asemic Greek (low-frag) does not persist; fragmented
+*familiar* Greek does not persist. Only fragmented, unfamiliar Greek — "fragmented nonsense," with *nonsense*
+read as the bundle — does. And the NAMEHOOD reversal closes the loop with §3.1: the voces are not maximally alien
+to the model — they are a *recognizable genre* (H1 reads their texture cleanly), so they sit marginally *below*
+pure random strings on exactly the novelty axis that drives the depth. The same recognizability that makes H1 a
+robust positive at the surface makes the names *less* deep-fragment-adjacent than the random controls.
 
 So §3.4 does what §3.3 could not: it shows fragmentation is necessary-but-not-sufficient, names a second
-necessary factor (meaninglessness), and rules namehood out — not as an undetected null, but as a *measured
-reversal*. (Caveat: single model; the two non-name arms are n≈28–29; and "meaningful Greek" is operationalized
-as long Greek loanword forms — see §5. The factorial wants a second model before it generalizes.)
+necessary factor (novelty/unfamiliarity), and rules namehood out — not as an undetected null, but as a *measured
+reversal*. (Caveats: single model; the two non-name arms are n≈28–29; the lexical arm bundles meaning with
+frequency/familiarity (§5); and the name-likeness metric, the deep-band, and the single-seed cohorts are all
+limitations §5 lists. The factorial wants a second model before it generalizes.)
 
 ## 4. What survives, and what the depth was
 
@@ -208,14 +217,15 @@ as long Greek loanword forms — see §5. The factorial wants a second model bef
 - **A deep voces representation (the spell): not found, and reversed where cleanest.** Decider null in 2 of 3;
   and at matched fragmentation+lexicality the voces persist deep *less* than random asemic strings (§3.4).
 - **The deep "script" effect: fragmented nonsense.** Two co-equal, individually-significant drivers — **byte
-  fragmentation** (§3.3 across models, §3.4 within Mistral) and **meaninglessness** (§3.4) — neither sufficient
-  alone. The deep region holds Greek that is both over-fragmented and meaning-evacuated.
+  fragmentation** (§3.3 across models, §3.4 within Mistral) and **novelty/unfamiliarity** (§3.4; a bundle of
+  meaninglessness + low frequency + byte-vs-morphemic tokenization, not yet separated) — neither sufficient
+  alone. The deep region holds Greek that is both over-fragmented and unfamiliar.
 
 *"It's the script, not the spell"* now reads, fully: **the surface recognition is real and general; there is no
 deep representation of the voces as names (it is null, even slightly reversed); and the deep "script" effect is
-the model holding fragmented, meaning-less Greek — the tokenizer's shredding is one of its two necessary
+the model holding fragmented, unfamiliar Greek — the tokenizer's shredding is one of its two necessary
 ingredients, not the whole story.** Iteration 1's incidental side-finding is now a decomposed two-factor
-mechanism with a null where the romance lived.
+mechanism with a null where the romance lived (with the second factor still a familiarity-bundle, §5).
 
 ## 5. The honest hedges
 
@@ -223,13 +233,29 @@ mechanism with a null where the romance lived.
   arms are n≈28–29 (bootstrap CIs reported throughout). A second model (the pending Llama, or fp16 Gemma) is
   owed before the two-factor mechanism is called cross-family. The cross-model fragmentation ordering (§3.3) is
   still only three confounded points.
-- **"Meaningful Greek" is operationalized, not pure.** The lexical-matched cohort is long Greek loanword/learned
-  forms (ΦΙΛΟΣΟΦΙΑ, ΔΗΜΟΚΡΑΤΙΑ, …) selected to ~11 Greek tokens — meaningful and in-vocabulary, but they also
-  tend to receive *morphemic* subword tokens where the asemic strings get byte-fragments at the same count. That
-  difference is arguably *part of* what "meaninglessness" means operationally here; we flag it rather than hide
-  it, and a morpheme-controlled cohort would sharpen the lexicality arm.
+- **The "lexicality" axis is a familiarity bundle, not pure meaning.** The lexical-matched cohort is long Greek
+  loanword/learned forms (ΦΙΛΟΣΟΦΙΑ, ΔΗΜΟΚΡΑΤΙΑ, ΑΝΘΡΩΠΟΛΟΓΙΑ…) selected to ~11 Greek tokens. They are not only
+  *meaningful* — they are *high-frequency and cross-lingually familiar* international vocabulary, and they tend to
+  receive *morphemic* subword tokens where the asemic strings get byte-fragments at the same count. So the
+  +0.076 "lexicality" effect confounds meaning, frequency, familiarity, and tokenization-quality; we now name the
+  factor **novelty/unfamiliarity** for honesty. **The owed fix (v3) is a *meaningful-but-unfamiliar* Greek
+  cohort** — rare/archaic words, not international loanwords — which separates meaning from frequency. Until it
+  runs, "fragmented *nonsense*" should be read as "fragmented *unfamiliar* Greek."
+- **The name-likeness metric rests on a small, genre-specific anchor.** Name-likeness is cosine to a *name*
+  centroid (16 Greek mythological/historical names) minus a *random* centroid (28 strings). 16 names is a noisy
+  centroid, and "name-like" is really "near this specific cloud of Greek proper nouns" — a design-level limit
+  inherited from iteration 1 that caps how much the construct can bear. A larger, more diverse name anchor is owed.
+- **Single-seed cohorts; unvalidated deep-band; asymmetric Latin baseline.** (i) The asemic/random cohorts are a
+  single `SEED=0` draw — the bootstrap CIs resample *those* strings but not the arbitrariness of the draw; a
+  multi-seed regeneration is owed (v3). (ii) The "deep" band is the back half of layers by convention, not chosen
+  from the layer profile; the effect could concentrate or be diluted — a per-layer plot is owed (v3). (iii) The
+  Greek−Latin subtraction assumes the Latin rendering is a uniform within-string baseline, but for the lexical
+  cohort the *Latin* form (PHILOSOPHIA) is itself familiar, so its ~0 gap may partly reflect "recognized in both
+  scripts" rather than "doesn't persist deep" — v3 reports absolute Greek name-likeness alongside the difference.
 - **The NAMEHOOD reversal is small (−0.033) and single-model.** We read it as "no namehood, plausibly slightly
-  negative because the voces are a recognizable genre," not as a large effect; it wants replication.
+  negative because the voces are a recognizable genre," not as a large effect; it wants replication. (It is,
+  however, a *significant* negative, not an underpowered null — stronger evidence against namehood than a bare
+  non-rejection would be.)
 - **Quantization, and a disclosed data anomaly.** Gemma and Mistral are 4-bit; Gemma's p=0.007 wants fp16.
   Separately, the Gemma *re-run* artifact carries an **unexplained value anomaly** — its Greek decider p is
   byte-identical to Mistral's (0.2659000459593744) despite different underlying means, a value-bleed/assembly bug
@@ -256,14 +282,15 @@ inconvenient answer, and the thesis-confirming results did not get the same audi
 the confession, and then did the thing the confession demands: **rebuilt the falsifier matched** (the §3.4
 factorial), and let it speak. It returned an answer better than either the prediction or its confounded first
 draft: not "pure fragmentation," not "names," but **two factors and a reversal** — fragmentation *and*
-meaninglessness drive the depth, and the names sit below the noise.
+novelty/unfamiliarity drive the depth, and the names sit below the noise. (The second factor is still a
+familiarity-bundle the next cohort must split, §5 — the discipline that produced §3.4 is not finished with it.)
 
 So the author's headline predictions were **falsified three times**, the third was a check on the study's own
 *apparatus*, caught late and then *repaired* rather than spun. The cross-family iteration's yield is larger and
 sturdier than iteration 1's: a robust H1, a voces-specificity null that turns slightly negative where cleanest,
 a provisional cross-model fragmentation correlation, and a within-model decomposition of the deep effect into
-fragmentation + meaninglessness. The deflation holds, deeper than before: **the depth was never the spell, and
-never quite "the tokenizer" alone — it was the place the model keeps fragmented nonsense, and the barbarous
+fragmentation + novelty. The deflation holds, deeper than before: **the depth was never the spell, and never
+quite "the tokenizer" alone — it was the place the model keeps fragmented, unfamiliar Greek, and the barbarous
 names are too recognizable to live all the way down there.**
 
 ---
