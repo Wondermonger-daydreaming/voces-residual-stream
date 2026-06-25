@@ -111,7 +111,7 @@ The H1 result is robust within those bounds; the central H2 *negative* is the cl
 
 ## Future work
 
-- **Cross-family replication (Llama, Gemma).** H1 and the Greek finding are within-Qwen-family only; the Greek effect specifically is downstream of a single tokenizer.
+- **Cross-family replication (Llama, Gemma, Mistral).** H1 and the Greek finding are within-Qwen-family only; the Greek effect specifically is downstream of a single tokenizer. **A ready-to-run harness is included:** `notebooks/voces_crossfamily.ipynb` reuses every science cell unchanged and only swaps the model — pick Gemma-2-9B / Llama-3.1-8B / Mistral-7B (a *different tokenizer* is the test, not raw scale; Llama-405B does not fit Colab), and the model-tagged results JSON drops straight into a comparison against the Qwen decider.
 - **Multi-seed (≥3) repeat.** Bounds run-variance, which a single seed leaves unestimated — turns "pilot weight" from a hedge into a quantified uncertainty.
 - **Is the deep-Greek effect latent distributional *namehood*, not pure orthography? — *with its falsifier attached.*** A reviewer's hypothesis: Greek tokens may skew proper-name/theonym in pretraining, so deep-Greek persistence could be real distributional namehood rather than surface orthography. **This is the romantic-reading shape, and it does not enter the repo without its killer:** render *non-name* Greek strings (function words, numerals, common nouns) and test whether they persist deep too. If they do → pure script-processing, hypothesis dead. Only if *name-plausible* Greek alone persists is there a namehood effect worth chasing. *Stated only with the test, never the hypothesis alone — adding the exciting idea without its control would reintroduce exactly the disease this paper cured.*
 
