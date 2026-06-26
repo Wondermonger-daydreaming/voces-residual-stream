@@ -65,3 +65,49 @@ resolves paper §3.4 into two co-equal significant drivers (FRAGMENTATION +0.078
 significant null-then-reversal (NAMEHOOD −0.033), and **replicates the v1 numbers** (voces +0.040 vs +0.041;
 low-frag −0.005). Single model; non-name arms n≈28–29; a second model is owed before the decomposition is called
 cross-family.
+
+---
+
+## Sequel runs — the operator/coercion axis (Represented, Not Operative) + Talkie §4c
+
+*Artifacts under `results/coercion/` and `src/coercion/`; paper `paper/represented-not-operative.md`. Findings
+source-of-truth: `results/coercion/coercion_FINDINGS.md`. This sequel is a **draft** — less hardened than the
+study above; recorded here at the same integrity standard.*
+
+**Models / quantization / seed.**
+- Causal study (v2→v4 + cross-family §4a): Qwen2.5-7B-Instruct, Mistral-7B-Instruct-v0.3, Gemma-2-9b-it — **NF4
+  4-bit, seed 0**. v4 has no standalone JSON; its figures are computed in-cell and recorded in
+  `coercion_FINDINGS.md` §3d (Qwen numbers also in `voces_coercion_v2_results.json`; cross-family in
+  `voces_coercion_xfam_{mistral,gemma}_results.json`).
+- Training-era control §4c: `talkie-lm/talkie-1930-13b-base` (`final.ckpt`) and `talkie-lm/talkie-web-13b-base`
+  (`base.ckpt`) — both ~53 GB **fp32** checkpoints, run at **8-bit** (bitsandbytes `Linear8bitLt`) on a single
+  Colab **L4 (24 GB)**. The instruction-tuned `talkie-1930-13b-it` (`rl-refined.pt`, bf16) was used only for the
+  refusal gate.
+
+**Talkie is a custom (non-HuggingFace) architecture.** Raw `.ckpt` + tiktoken `vocab.txt`, no `config.json`; a
+40-layer GPT (RoPE/SwiGLU/RMSNorm/embedding-skip) whose forward returns only last-position logits and has no
+attention-mask path. The harness was ported (not swapped): meta-build → swap every `nn.Linear` for an 8-bit
+`Linear8bitLt` loaded directly to GPU (the stock `load_checkpoint` builds 52 GB of fp32 on CPU and will not fit),
+residual capture by forward hooks on `model.blocks[i]`, batch-1 forward. Full port: `src/coercion/build_talkie_probe.py`.
+
+**The refusal gate (a recorded decision, not a hidden one).** `talkie-1930-13b-it` refused **0 of 6**
+borderline-harmful prompts at baseline (it complies, degenerately, or emits non-text). The model has no safety
+training (the `rl-refined` stage is quality tuning). With no refusal behaviour, `d_refuse` is a topic direction,
+so the *causal* (steering) half of the study is **unaskable on Talkie** — only the representational half is run
+there. This is a property of the model, not a choice of scope.
+
+**The §4c robustness statistic.** The transfer dissociation is the **per-item** (120-point) regression of
+grimoire-rung projection onto the plain coercion direction, with a **3000× bootstrap over the 24 imperative
+stems** (clusters of 5 rung-items). Reported as 95% percentile CIs: web +0.40 [0.32, 0.49] (100% of bootstraps
+positive) vs 1930 −0.04 [−0.14, 0.06] (24% positive). The intervals do not overlap; the 1930 interval straddles
+zero. `results/coercion/talkie_robustness_results.json`.
+
+**Disclosed caveats (most-fragile first).**
+1. **Talkie is 8-bit with no fp16 confirmation** (13B fp16 ≈ 26 GB > the 24 GB L4). Treat magnitudes as
+   quantization-sensitive; the robust claim is the *sign + CI separation*, not the point values.
+2. **The §4c bootstrap is single-corpus** — resampling is over 24 stems *within one stem-set* and one register
+   pair, not across independent corpora. An alternate stem-set / register operationalization is untested.
+3. **Era is confounded with the two specific training runs** — "pre-1931 vs modern" is operationalized as
+   "Talkie-1930 vs Talkie-web," two particular checkpoints; a single architecture/recipe, not a population.
+4. **The causal verdict (§3.x, §4a) is 4-bit, single-seed** — as the predecessor study, magnitudes are
+   quantization- and seed-sensitive; the cross-family agreement on *sign and verdict* is the robust part.

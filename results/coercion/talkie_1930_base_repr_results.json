@@ -1,0 +1,18 @@
+{
+  "model": "talkie-1930-13b-base",
+  "quant": "8bit (bnb Linear8bitLt, custom-arch port on L4)",
+  "experiment": "coercion-ladder representational probe (v4 length-matched corpus); causal half VOID (talkie-it 0/6 refusal)",
+  "n_layers": 40,
+  "peak_layer": 38,
+  "ladder_rho_plain": 0.90,
+  "transfer_rho_grim": -0.10,
+  "grim_within_rho": 0.90,
+  "cos_plain_grim_dir": 0.02,
+  "proj_len_corr": -0.159,
+  "F3_sentiment_leak": 0.121,
+  "proj_plain_by_rung": [-9.688, -151.681, 250.289, 308.952, 330.064],
+  "proj_grim_by_rung_using_plain_dir": [-100.607, -109.278, -97.087, -92.941, -109.776],
+  "headline": "Vintage model represents the modern authority ladder (rho 0.90) AND the grimoire conjuration ladder (within rho 0.90) as TWO ORTHOGONAL directions (cos 0.02, transfer rho -0.10). No cross-register unification -- UNLIKE modern instruct models (Qwen/Mistral/Gemma transfer rho 0.5-1.0).",
+  "confound": "base-vs-instruct, NOT yet era-vs-modern. Requires talkie-web-base (FLOP-matched modern base, same arch) control to attribute the orthogonality to training era.",
+  "refusal_gate_talkie_it": "0/6 baseline refusal -> causal/steering half void (C1 lesson: d_refuse meaningless on non-refusing model)"
+}

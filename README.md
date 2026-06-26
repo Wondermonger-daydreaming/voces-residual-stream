@@ -10,6 +10,8 @@ This repository studies how a transformer represents the *voces magicae* — the
 
 This is **an affirmative result with a sharp bound**: the model recognizes the form (the part of the magicians' form-not-meaning premise that was ever testable), and the "depth" that looked like aboutness was subword tokenization shredding exactly the script the magicians thought most powerful.
 
+> **Sequel in this repo — *Represented, Not Operative* (the operator/coercion axis).** The grimoire tradition supplies more than barbarous names; it supplies a centuries-graded **coercion ladder** (petition → command → conjuration → compulsion → *diabolē*/binding). A second study uses that ladder to ask whether models represent *being commanded under escalating authority* — and whether that representation moves refusal. **It does the first; it does not do the second** (represented, real, length-clean; causally inert for refusal — across three instruction-tuned families). A final **training-era control** (Talkie-1930 vs Talkie-web, a FLOP-matched base pair) then finds the plain→grimoire *transfer* is a property of the **modern** training distribution: a model trained inside the tradition's era keeps the esoteric register on its **own orthogonal axis** rather than folding it into generic authority. Paper: [`paper/represented-not-operative.md`](paper/represented-not-operative.md); results `results/coercion/`; reproducers `src/coercion/`. **Draft status** — single-seed, mostly-4-bit (Talkie 8-bit), not as hardened as the study above; see the [Sequel section](#the-sequel--represented-not-operative-coercion-axis--training-era-control) and `PROVENANCE.md`.
+
 ---
 
 ## The finding in two figures
@@ -135,6 +137,28 @@ recognizable (the very thing H1 detects) to live all the way down there. Read
 - **Multi-seed (≥3) repeat.** Bounds run-variance, which a single seed leaves unestimated — turns "pilot weight" from a hedge into a quantified uncertainty.
 - **Llama-3.1-8B** — the 4th tokenizer point (tiktoken, 128k). Falsifiable prediction on record: Greek ≈ 9–10 tokens/vox, deep gap ≈ Qwen's +0.016.
 - **fp16 Gemma** — confirm the lone Gemma p=0.007 dissolves un-quantized.
+
+## The sequel — Represented, Not Operative (coercion axis + training-era control)
+
+*Paper: [`paper/represented-not-operative.md`](paper/represented-not-operative.md) (+ `.docx`). Results: [`results/coercion/`](results/coercion/). Reproducers: [`src/coercion/`](src/coercion/). Findings source-of-truth: [`results/coercion/coercion_FINDINGS.md`](results/coercion/coercion_FINDINGS.md).*
+
+Where the study above asks whether the model recognizes the *form* of a barbarous name, this sequel asks whether it represents the *coercion* the grimoire operator escalates — and whether that representation does anything. It uses the same template-as-ruler design, with the tradition's five-rung authority ladder (**petition → command → conjuration → compulsion-by-authority → *diabolē*/binding**) as ordinal ground truth.
+
+**The affirmative finding, and its bound.** A difference-of-means **authority/coercion direction** is real, graded, and refusal-*adjacent* on a length-matched corpus (cos +0.461; ladder ρ 0.90; plain→grimoire transfer ρ 0.90; proj~length decorrelated by design, r +0.16) — and it **replicates across three instruction-tuned families** (Qwen2.5-7B, Mistral-7B-v0.3, Gemma-2-9b) spanning three tokenizers and baseline-refusal regimes 0.07–0.93. **But it is causally inert:** steering the direction with *both* length and refusal orthogonalized away is flat (linear-regime slope 0.0); the apparent earlier effects were length and the refusal axis worn as a costume. **Represented, not operative** — authority-framing *per se* is not an independent lever on refusal in these models, with Gemma (baseline refusal 0.93) the cleanest causal null.
+
+**A methods result rides alongside.** Two cheap de-confounds manufactured *two opposite artifacts* (post-hoc length-residualization → a false *null* on the representation; single-axis orthogonalization on an unmatched corpus → a false *positive* on causation). Only the corpus-level control — length-**matched** at the source + **double**-orthogonalization — resolved both. *How you remove a confound matters.*
+
+**The training-era control (Talkie-1930 vs Talkie-web) — a native-tradition double dissociation.** The grimoire/PGM register is native to **pre-1931** text (Preisendanz's PGM 1928–31; Mathers 1904). The Talkie family supplies a FLOP-matched, architecture-identical 13B **base** pair differing *only in training era*. Both order the modern authority ladder identically (ρ 0.90); they diverge on the grimoire register:
+
+| metric (peak layer 38/40) | **Talkie-1930** (pre-1931) | **Talkie-web** (modern) |
+|---|---|---|
+| ladder ρ (modern authority) | 0.90 | 0.90 |
+| grimoire within-register ρ | **0.90** | 0.70 |
+| per-item transfer ρ (plain→grimoire), 95% CI | **−0.04** [−0.14, 0.06] | **+0.40** [0.32, 0.49] |
+
+The two bootstrap CIs (3000×, over 24 stems) **do not overlap**; the pre-1931 CI straddles zero. The modern model **assimilates** grimoire-conjuration to its generic-authority axis; the pre-1931 model gives it **its own orthogonal, cleaner axis**. **Transfer is distributional, not architectural** — "native" means *distinct and dedicated*, not *unified with modern command*. (The instruction-tuned `talkie-1930-it` refuses **0/6** borderline-harmful prompts — no safety training — so only the *representational* half is askable on Talkie; the causal half is void there. The port to Talkie's custom non-HuggingFace architecture is released as `src/coercion/build_talkie_probe.py`.)
+
+**Draft status & what's owed (honest, matching the study above).** Single-seed; the three-family causal verdict is 4-bit; the Talkie era-control is 8-bit on a 24 GB GPU with no fp16 confirmation and a bootstrap over stems *within one corpus*. The robust Talkie claim is the **sign + CI separation**, not the point magnitudes. Owed: a **multi-corpus robustness pass** for §4c (independent stem-sets / register operationalizations); an **fp16 confirmation** of the Talkie magnitudes (needs ≥26 GB GPU); a larger length-matched corpus + multi-seed for the causal verdict.
 
 ## License
 

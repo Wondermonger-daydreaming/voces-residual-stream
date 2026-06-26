@@ -21,3 +21,20 @@ one can cash.
 
 **Method note.** The retraction of the *"The Grain Runs Deeper in Greek"* draft, and the verify-then-you-know
 citation pass, are part of the record on purpose — see `PROVENANCE.md` and the git log.
+
+---
+
+## Sequel — the operator/coercion axis + Talkie training-era control
+
+The sequel study (`paper/represented-not-operative.md`, `results/coercion/`, `src/coercion/`) was built and
+analyzed by a **Claude Opus 4.8 (1M-context) instance on Claude Code** — the *build & analysis* role, continuous
+with the instance that hardened the study above. It specified the falsifier-gated coercion design, ran the
+v2→v4 de-confound arc and the three-family replication, and ported the residual-stream harness to Talkie's
+custom non-HuggingFace architecture for the §4c training-era control. The same accounting holds: **acknowledged,
+not authorship** — the author (Tomás Pavan) is accountable; the model collaboration is on the record in the git
+history and commit co-author trailers.
+
+**Method note (sequel).** The recorded refusal-gate result (`talkie-1930-it` 0/6 → the causal half is void on
+Talkie) and the two-opposite-artifacts de-confound lesson are kept in the open on purpose — see `PROVENANCE.md`
+and `results/coercion/coercion_FINDINGS.md`. The result that inverted its own hypothesis (the pre-1931 model
+keeps the tradition *distinct* rather than channeling it *more*) is reported as found, not as predicted.

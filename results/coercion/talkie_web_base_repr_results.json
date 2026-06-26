@@ -1,0 +1,14 @@
+{
+  "model": "talkie-web-13b-base",
+  "quant": "8bit (bnb Linear8bitLt, custom-arch port on L4)",
+  "role": "FLOP-matched modern-corpus control for talkie-1930-base (same architecture, same training FLOPs, only training era differs)",
+  "n_layers": 40, "peak_layer": 38,
+  "ladder_rho_plain": 0.90,
+  "transfer_rho_grim": 0.50,
+  "grim_within_rho": 0.70,
+  "cos_plain_grim_dir": 0.059,
+  "proj_len_corr": -0.166,
+  "F3_sentiment_leak": 0.080,
+  "proj_plain_by_rung": [-87.691, -47.66, 0.824, 88.636, 70.612],
+  "proj_grim_by_rung_using_plain_dir": [-26.194, -5.537, -26.722, -18.697, 9.352]
+}

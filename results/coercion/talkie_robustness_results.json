@@ -1,0 +1,15 @@
+{
+  "method": "per-item transfer regression (120 grimoire items projected on plain coercion dir at peak layer 38) + 3000x bootstrap over the 24 stems (clusters of 5 rung-items)",
+  "purpose": "firm the coarse 5-rung Spearman transfer contrast (-0.10 vs +0.50) with proper item-level estimates + CIs",
+  "web_modern": {
+    "transfer_rho_item": 0.397, "transfer_rho_CI95": [0.319, 0.486],
+    "transfer_slope": 5.793, "transfer_slope_CI95": [4.687, 6.862],
+    "frac_bootstrap_positive": 1.0, "within_register_ladder_rho_item": 0.90
+  },
+  "vintage_1930": {
+    "transfer_rho_item": -0.035, "transfer_rho_CI95": [-0.137, 0.062],
+    "transfer_slope": -0.20, "transfer_slope_CI95": [-1.028, 0.641],
+    "frac_bootstrap_positive": 0.238, "within_register_ladder_rho_item": 0.869
+  },
+  "verdict": "DISSOCIATION HOLDS. Web transfer CI [0.319,0.486] strictly positive and non-overlapping with 1930 CI [-0.137,0.062], which straddles zero. The modern model transfers plain->grimoire coercion; the vintage model does not. Both keep strong within-register ladders (0.87-0.90). The 5-rung result is not a small-n artifact."
+}
