@@ -1,4 +1,4 @@
-# Cross-Family Replication — findings (3 of 4 models)
+# Cross-Family Replication — findings (4 of 4 models — Llama-3.1-8B added 2026-06-26)
 
 Testing whether the iteration-1 findings (Qwen2.5) generalize across **tokenizer families**. Same pipeline,
 byte-identical science cells; only the model swaps. Compare **sign / shape / significance, NOT raw cosine
@@ -9,12 +9,11 @@ magnitude** across models (each has its own geometry) — except token counts, w
 | Qwen2.5-3B (baseline) | BPE 152k | fp16 | 36 | done |
 | Gemma-2-9B | SentencePiece 256k | 4-bit | 42 | done |
 | Mistral-7B-v0.3 | SentencePiece 32k | 4-bit | 32 | done |
-| Llama-3.1-8B | tiktoken 128k | — | — | PENDING (Meta gate) |
+| Llama-3.1-8B | tiktoken 128k | 4-bit | 32 | **done (2026-06-26)** |
 
-## 1. H1 (surface recognition) — REPLICATES in all three
-Peak 0.887 Latin / 0.920 Greek (Qwen) · 0.947 (Gemma) · 0.960 (Mistral), early-layer, beats surprisal-only by ~+0.4. Holds even where
-voces run *more* surprising than controls → recognition is architectural, not exposure. (Mistral's *Greek* peak
-shifts late, L19 — its 32k vocab shreds Greek, so the distinction is assembled deeper.) **The one robust positive.**
+## 1. H1 (surface recognition) — REPLICATES in all four
+Peak 0.887 Latin / 0.920 Greek (Qwen) · 0.947 (Gemma) · 0.960 (Mistral) · **0.947 Latin / 0.927 Greek (Llama-3.1-8B)**, beating surprisal-only by ~+0.3–0.4. Holds even where
+voces run *more* surprising than controls → recognition is architectural, not exposure. The *locus* roves by tokenizer (Mistral's *Greek* peak shifts late, L19 — its 32k vocab shreds Greek; Llama's Latin peak is mid-stack L16, its Greek peak early L1) — but the distinction is always recovered. **The one robust positive, now 4/4.**
 
 ## 2. The decider (voces-specific deep representation) — NULL across families → spell is dead
 | decider p | Greek | Latin |
@@ -22,8 +21,9 @@ shifts late, L19 — its 32k vocab shreds Greek, so the distinction is assembled
 | Qwen-3B | 0.224 | 0.886 |
 | Gemma-9B | 0.094 | **0.007** |
 | Mistral-7B | 0.266 | 0.146 |
+| Llama-3.1-8B | 0.074 | 0.657 |
 
-Null in Qwen & Mistral. **Gemma's lone p=0.007 (Latin) is NOT replicated** by the other two and is run-variable
+Null in Qwen, Mistral & **Llama** (Llama's Greek p=0.074 is the closest any model comes to the α=0.05 line without crossing it — still null, "unsupported at this power, not disproven," exactly the Qwen reading). **Gemma's lone p=0.007 (Latin) is NOT replicated** by the other three and is run-variable
 under 4-bit (→ p=0.032 on a re-run) → held as **provisional pending fp16**, not a settled artifact. **No
 *detectable* voces-specific deep representation in any family at this power** (absence of detection, not proof of absence).
 
@@ -34,9 +34,15 @@ Magnitude scales **monotonically with Greek tokens-per-vox** (direct measure, n=
 |-------|-------|-------------------|------------------------------|
 | Mistral-7B | 32k | **10.76** | **+0.051** (strongest) |
 | Qwen-3B | 152k | **9.63** | +0.016 |
+| Llama-3.1-8B | 128k | **7.74** | +0.022 |
 | Gemma-9B | 256k | **7.69** | ~0.000 (none) |
 
-More Greek fragmentation → stronger deep-Greek persistence. **Not explained by precision** (the two 4-bit models
+More Greek fragmentation → stronger deep-Greek persistence —  **broadly, but Llama is an honest wrinkle:** at
+nearly identical Greek fragmentation (7.74 vs Gemma's 7.69 tok/vox) Llama shows a deep gap (+0.022) and Gemma
+shows none (~0). So fragmentation is a strong *driver* but not the *whole* story — model-specific variance
+remains at matched fragmentation. (Llama's gap also slightly exceeds Qwen's despite fewer Greek tokens, so the
+ordering is approximate, not strict.) The mechanism (fragmentation + meaninglessness, §3b) still holds; the
+single-axis "monotonic in tok/vox" summary is the part Llama softens. **Not explained by precision** (the two 4-bit models
 are at opposite ends) **or size**. It is script-general (decider null → not voces-specific), encoding-invariant
 (same-strings control), and vanishes when Greek tokenizes cleanly. → **The "depth" was the tokenizer fragmenting
 Greek, not the words.** (Data: `greek_fragmentation.json`. Gemma tokens via the non-gated `unsloth/gemma-2-9b`
@@ -93,7 +99,7 @@ Gemma — single-seed concern dead); *absolute* Greek name-likeness shows meanin
 BOTH scripts (Greek−Latin gap ~0 via recognition, not un-name-likeness) — the gap is a script-asymmetry that
 recognition collapses (the H1↔depth coupling, in the magnitudes).
 
-## 4. Synthesis (3 of 4 models; factorial single-model)
+## 4. Synthesis (4 of 4 models; factorial two-model)
 Surface recognition generalizes (H1, robust); no voces-specific deep representation (decider null, and §3b's
 NAMEHOOD arm slightly *negative*); the deep "script" effect decomposes (Mistral factorial, §3b) into **two
 co-equal significant drivers — fragmentation AND meaninglessness — with namehood ruled out.** The deep region
@@ -101,7 +107,12 @@ holds *fragmented nonsense*; the voces are too recognizable (H1) to live all the
 *"It's the script, not the spell — and the depth is fragmented nonsense."*
 
 ## Prediction scorecard (logged before the runs)
-- H1 replicates — **correct** (3/3).
+- **Llama-3.1-8B (predicted before the run): Greek ≈ 9–10 tok/vox, deep gap ≈ Qwen's +0.016.** Actual: Greek
+  **7.74** tok/vox (**missed low** — Llama's tiktoken fragments Greek *less* than predicted, near Gemma not Qwen),
+  deep gap **+0.022** (**close**, slightly above the +0.016 target). H1 replicated (0.947/0.927), decider stayed
+  null (p=0.074 Greek). Net: the *qualitative* predictions held (H1 yes, decider null, deep-Greek present); the
+  *fragmentation magnitude* came in lower than guessed, which is the wrinkle in §3.
+- H1 replicates — **correct** (now 4/4).
 - Decider stays null — **correct** for Qwen & Mistral; Gemma's p=0.007 was a false positive, killed by non-replication.
 - Deep-Greek replicates, *stronger* in big-Greek-vocab Gemma — **WRONG, and backwards**: the effect is strongest
   in the *worst*-Greek-coverage model (Mistral) and absent in the best (Gemma). The most informative miss — it
@@ -118,7 +129,8 @@ holds *fragmented nonsense*; the voces are too recognizable (H1) to live all the
    fragmentation *and* lexicality fixed: voces vs an **asemic frag-matched** non-name arm (isolates namehood) vs
    a **lexical frag-matched** real-Greek arm (isolates lexicality) vs the original low-frag baseline (isolates
    fragmentation). Bootstrap CIs on every gap. This is what the v1 falsifier should have been.
-2. **Llama-3.1-8B** (tiktoken 128k) — 4th point. Predicted: Greek ≈ 9–10 tok/vox, deep gap ≈ Qwen's +0.016.
+2. ~~**Llama-3.1-8B** (tiktoken 128k) — 4th point.~~ **DONE 2026-06-26** — H1 replicates (0.947/0.927), decider
+   null (Greek p=0.074), Greek 7.74 tok/vox. The 4th tokenizer point is in; see the tables above.
 3. **fp16 Gemma** — confirm the p=0.007 dissolves un-quantized (and resolves the 4-bit re-run p-value anomaly,
    below). NB: resolving the *decider* anomaly needs re-running the cross-family **decider** notebook
    (`notebooks/voces_crossfamily.ipynb`) on Gemma — the falsifier notebooks compute the *factorial*, not

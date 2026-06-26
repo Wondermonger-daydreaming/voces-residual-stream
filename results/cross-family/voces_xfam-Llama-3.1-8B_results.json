@@ -1,0 +1,88 @@
+{
+    "model": "meta-llama/Llama-3.1-8B",
+    "tier": "4bit/Llama-3.1-8B",
+    "quantized": true,
+    "n_layers": 32,
+    "layer_used": 16,
+    "seed": 0,
+    "n_voces": 76,
+    "n_theonym": 17,
+    "match_quality": {
+        "dtok_mean": 0.0,
+        "dsurp_mean": 0.7286513886953655
+    },
+    "greek_tokens_per_vox_mean": 7.7368421052631575,
+    "greek_tokens_per_vox_median": 8.0,
+    "report_layer": 16,
+    "h1": {
+        "latin": {
+            "peak_acc": 0.9470833333333333,
+            "peak_layer": 16,
+            "mean_acc": 0.8975505050505052,
+            "surp_only_acc": 0.5854166666666666
+        },
+        "greek": {
+            "peak_acc": 0.9270833333333334,
+            "peak_layer": 1,
+            "mean_acc": 0.8691287878787879,
+            "surp_only_acc": 0.6245833333333334
+        }
+    },
+    "twoxtwo": {
+        "latin": {
+            "nb": 0.06410906945957857,
+            "pa": -0.008432975259877868,
+            "low_pa_mean": -0.010068353341550243,
+            "n_low_pa": 49,
+            "raw_split_p": 0.000729997824010435,
+            "resid_split_p": 0.2314410151189764,
+            "low_pa_vs0_p": 0.33553161971230183
+        },
+        "greek": {
+            "nb": 0.05132152753717759,
+            "pa": 0.0494426994000451,
+            "low_pa_mean": 0.054070335261675775,
+            "n_low_pa": 49,
+            "raw_split_p": 0.9304679472597039,
+            "resid_split_p": 0.5413368224920271,
+            "low_pa_vs0_p": 5.776206571270143e-06
+        }
+    },
+    "nl_peak_layer": {
+        "latin": 1,
+        "greek": 2
+    },
+    "greek_split": {
+        "authentic_deep": 0.024393458172206967,
+        "translit_deep": 0.037438199261194974,
+        "latin_deep": 0.0023723253207688596,
+        "algo_deep": 0.019170110851391406,
+        "n_authentic": 13,
+        "n_translit": 39
+    },
+    "voces_specificity": {
+        "greek": {
+            "vox_deep": 0.03689068305392225,
+            "ctl_deep": 0.019453780204594352,
+            "p": 0.07360352782414718,
+            "n": 49
+        },
+        "latin": {
+            "vox_deep": -0.0010148399159544792,
+            "ctl_deep": 0.0024589936987978794,
+            "p": 0.6572606147781225,
+            "n": 49
+        }
+    },
+    "nonname_falsifier": {
+        "voces_deep_gap": 0.0379055238000172,
+        "nonname_deep_gap": 0.030419917831964353,
+        "ratio": 0.8025193898507886
+    },
+    "version": "xfam-Llama-3.1-8B",
+    "prediction_check": {
+        "on_record_greek_tok_per_vox": "9-10",
+        "actual": 7.74,
+        "verdict": "directionally right (heavy Greek fragmentation), magnitude slightly under the predicted range"
+    }
+}

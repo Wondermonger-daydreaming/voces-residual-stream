@@ -4,7 +4,7 @@
 
 This repository studies how a transformer represents the *voces magicae* — the "barbarous names" of the Greek Magical Papyri (PGM), strings their own tradition holds to be efficacious through *form* rather than meaning. That premise is the testable one: a transformer processes the *form* of tokens with no native semantics, so it is the right instrument to ask whether "barbarous-name-ness" is a real perceptual category to a pure form-processor. (Not whether the magic *works* — whether the *form* the magicians cared about is a real, detectable thing.)
 
-> **TL;DR — the affirmative finding.** A model **recognizes the orthographic texture of a barbarous name** — cleanly, on sight, at the early layers, far above a frequency baseline (H1: peaks 0.89–0.96) — and this **replicates across three tokenizer families** (Qwen BPE-152k, Gemma SP-256k, Mistral SP-32k), even where the model finds the voces *more* surprising than their controls. **Texture-recognition is a transformer property, not a single-tokenizer artifact.** The form the magicians located their power in is real and a form-machine detects it.
+> **TL;DR — the affirmative finding.** A model **recognizes the orthographic texture of a barbarous name** — cleanly, on sight, at the early layers, far above a frequency baseline (H1: peaks 0.89–0.96) — and this **replicates across four tokenizer families** (Qwen BPE-152k, Gemma SP-256k, Mistral SP-32k, Llama tiktoken-128k), even where the model finds the voces *more* surprising than their controls. **Texture-recognition is a transformer property, not a single-tokenizer artifact.** The form the magicians located their power in is real and a form-machine detects it.
 >
 > **The bound that makes it precise.** The recognition is **surface**: it does *not* deepen into a representation of the voces *as names* (the voces-vs-control decider is null in 2 of 3 families). And the one place name-adjacency *seemed* to persist deep was the **tokenizer**, not the spell — its magnitude tracks how badly Greek byte-fragments, and a matched-cohort factorial (Mistral, replicated on Gemma) decomposes it into **fragmentation + meaninglessness** (frequency ruled out by a surprisal-controlled split, both models), with *namehood* absent — slightly reversed, even: the voces persist *less* deep than matched noise, because they are a recognizable genre. Geometry bought adjacency — real, surface, general — not aboutness: **recognition without representation** (the model recognizes barbarous-name-*ness* without representing a barbarous name *as* a name — a knowing-that without a knowing-what; see paper §4.5).
 
@@ -117,10 +117,10 @@ Single-model, single-tokenizer, single-seed pilot (Qwen2.5-3B). **Limitations, m
 
 The H1 result is robust within those bounds; the central H2 *negative* is the claim, stated at pilot weight. The script-asymmetry side-finding (Greek-script tokens held name-adjacent deeper than Latin) is real and incidental — a fact about script processing, flagged for follow-up, not a result about ritual language.
 
-## Iteration 2 (cross-family) — DONE for 3 of 4 models → see [`results/cross-family/`](results/cross-family/)
+## Iteration 2 (cross-family) — DONE 4 of 4 models → see [`results/cross-family/`](results/cross-family/)
 
 The two most fragile limitations below have now been addressed. The cross-family run (Qwen2.5-3B, Gemma-2-9B,
-Mistral-7B-v0.3) plus a within-model matched factorial is in: **surface recognition (H1) replicates 3/3; the
+Mistral-7B-v0.3, **Llama-3.1-8B**) plus a within-model matched factorial is in: **surface recognition (H1) replicates 4/4; the
 spell stays dead (and is slightly *reversed* where cleanest); and the deep-Greek effect decomposes into two
 co-equal, individually-significant drivers — *fragmentation* AND *meaninglessness* — with *namehood* ruled out.**
 The deep "name-adjacent" region holds **fragmented nonsense** (both conditions necessary); the voces are too
@@ -129,13 +129,13 @@ recognizable (the very thing H1 detects) to live all the way down there. Read
 [`paper/its-the-script-not-the-spell-v2-crossfamily.md`](paper/its-the-script-not-the-spell-v2-crossfamily.md):
 *"The Texture of the Barbarous Name" — the model recognizes the form across tokenizer families (the affirmative result); the recognition is surface, not aboutness; and the deep "Greek" effect was the tokenizer, not the spell.*
 
-- **Cross-family replication — DONE 3/4** (Llama-3.1-8B pending Meta's gate). Harness: `notebooks/voces_crossfamily.ipynb` reuses every science cell unchanged and only swaps the model; the model-tagged results JSONs are in `results/cross-family/`.
+- **Cross-family replication — DONE 4/4** (Llama-3.1-8B added 2026-06-26 once Meta's gate cleared). Harness: `notebooks/voces_crossfamily.ipynb` reuses every science cell unchanged and only swaps the model; the model-tagged results JSONs are in `results/cross-family/`. **Llama (tiktoken 128k):** H1 replicates (0.947 Latin / 0.927 Greek, beats surprisal +0.36/+0.30); decider null (Greek p=0.074 — the closest-to-significant null, still null; Latin p=0.657); deep-Greek present (+0.022) at 7.74 Greek tok/vox. Recognition-without-representation holds in all four families.
 - **The matched factorial — RUN (Mistral), and it RESOLVES the deep effect.** The v1 falsifier was confounded (its non-name cohort fragmented ~2× less than the voces *and* was lexical — `src/check_nonname_fragmentation.py` reproduces the 2× gap). Rebuilt as a factorial holding Greek-token fragmentation fixed at ~11 tokens with bootstrap 95% CIs (`notebooks/voces_falsifier_v2_lexicality.ipynb`), it decomposes the deep-Greek effect into **two co-equal, individually-significant drivers and a null**: **FRAGMENTATION** (+0.078) — asemic Greek persists deep when fragmented, not when short; **LEXICALITY** (+0.076) — *meaningful* Greek does **not** persist even at matched fragmentation; **NAMEHOOD** (−0.033, significant) — the voces persist deep *less* than matched random asemic strings. The deep region holds **fragmented nonsense** (both conditions necessary); the names are too recognizable (H1) to live all the way down. Replicates v1 exactly (voces +0.040 vs +0.041). See `results/cross-family/FINDINGS.md` §3b. *The confounded first falsifier was disclosed, then repaired — and the repaired version returned a better answer than the prediction.*
 
 ## Still owed
 
 - **Multi-seed (≥3) repeat.** Bounds run-variance, which a single seed leaves unestimated — turns "pilot weight" from a hedge into a quantified uncertainty.
-- **Llama-3.1-8B** — the 4th tokenizer point (tiktoken, 128k). Falsifiable prediction on record: Greek ≈ 9–10 tokens/vox, deep gap ≈ Qwen's +0.016.
+- ~~**Llama-3.1-8B** — the 4th tokenizer point.~~ **DONE 2026-06-26.** Prediction-check (logged before the run): predicted Greek ≈ 9–10 tok/vox + deep gap ≈ +0.016; actual **7.74** tok/vox (missed low — Llama fragments Greek near Gemma, not Qwen) and deep gap **+0.022** (close). H1 + decider-null held qualitatively; the fragmentation magnitude came in lower than guessed (see `results/cross-family/FINDINGS.md` §3, the "Llama wrinkle").
 - **fp16 Gemma** — confirm the lone Gemma p=0.007 dissolves un-quantized.
 
 ## The sequel — Represented, Not Operative (coercion axis + training-era control)
