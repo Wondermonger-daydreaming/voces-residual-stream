@@ -315,6 +315,40 @@ what they are jointly a portrait of. (It also marks the cleanest open question f
 recognition-without-representation, isolated here in meaning-evacuated strings, characterizes a broader class of
 the model's early-layer category detectors.)
 
+### 4.6 A training-era control: the tradition's own model still only recognizes the texture
+
+Every model above was trained on a modern corpus, in which the barbarous-name genre is marginal. Does the central
+result — recognition of the form, no representation of namehood — survive when the tradition's register is
+*native* to the training distribution? The grimoire/PGM idiom is native to **pre-1931** text (Preisendanz's PGM,
+1928–31; Mathers, 1904). The **Talkie** family supplies a FLOP-matched, architecture-identical 13B **base** pair
+differing *only in training era*: `talkie-1930-13b-base` (pre-1931 English) and `talkie-web-13b-base` (modern
+web). We ran the identical recognition pipeline on the period-native model (Talkie's custom non-HuggingFace
+architecture; 8-bit on a 24 GB GPU; the full-forward port is released as `src/coercion/build_talkie_probe.py`).
+
+**H1 replicates in the period-native model.** Talkie-1930 recognizes the voces texture as cleanly as any modern
+family — Latin **0.914** / Greek **0.927** at layer 7, beating surprisal-only by **+0.41 / +0.40**.
+Texture-recognition is *era-invariant*: a fifth tokenizer point for H1, and the only one drawn from a corpus in
+which the tradition is *not* marginal.
+
+**The decider stays null.** The deep voces-specificity test is not significant for the pre-1931 model (Greek
+**p=0.83**, Latin **p=0.44**; Mann–Whitney one-sided, n=49). **A model trained inside the tradition's own era
+still does not represent the barbarous names *as names*; it only recognizes their form.** The romantic reading —
+that a period-native model would "know" the names — is falsified. Recognition-without-representation does not
+depend on the tradition being marginal in the training data; it holds even when the model's century *is* the
+tradition's.
+
+Consistent with §3.3, the Talkie tokenizer fragments Greek harder than any modern model — **13.0 tokens/vox**,
+the most extreme fragmentation in the study — and the deep-Greek signal is *still* not namehood. (The matched
+modern twin, `talkie-web-base`, is the obvious confirming control; its recognition harness ran but the analysis
+was not captured in this iteration, so the web decider value is **pending** — a near-certain null on the present
+evidence, not yet a number. The conclusion here rests on the pre-1931 model and the four modern families.) The
+*contrast partner* of this era-control — the same era-pair read on the operator/coercion axis — is reported in
+the sequel (*Represented, Not Operative*), and it lands the opposite way: there, training inside the tradition's
+era *does* reshape how the coercion register is organized (the pre-1931 model gives it its own orthogonal axis
+where the modern twin assimilates it). **Two era-pair controls, two opposite shapes:** native training reorganizes
+*coercion* and makes no difference at all to whether the model represents barbarous *names* as names. The spell
+stays dead even for the model that remembers its century.
+
 ## 5. The honest hedges
 
 - **The deep decomposition holds in two models, and the meaning/familiarity split is settled.** §3.4's

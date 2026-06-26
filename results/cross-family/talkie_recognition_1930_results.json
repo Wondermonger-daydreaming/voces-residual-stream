@@ -1,0 +1,7 @@
+{"model":"talkie-1930-13b-base","quant":"8bit","experiment":"recognition (voces-texture) native-tradition test on the pre-1931 model",
+ "n_layers":40,"greek_tok_per_vox":13.03,"match_dtok":0.0,
+ "h1":{"latin":{"peak_acc":0.914,"peak_layer":7,"surp_only":0.500,"beats_surprisal":0.414},
+       "greek":{"peak_acc":0.927,"peak_layer":7,"surp_only":0.533,"beats_surprisal":0.395}},
+ "decider":{"greek":{"vox_deep":0.0044,"ctl_deep":0.0069,"p":0.828,"n":49},
+            "latin":{"vox_deep":0.0557,"ctl_deep":0.0568,"p":0.435,"n":49}},
+ "headline":"H1 texture-recognition CONFIRMED (0.91/0.93, beats surprisal +0.41/+0.40) -- era-invariant. DECIDER NULL (greek p=0.83, latin p=0.44) -> the pre-1931 model does NOT represent voces as names. Recognition-without-representation holds even inside the tradition's own era. Greek tok/vox 13.03 (highest of any model -- 1930 English vocab shreds Greek hardest)."}

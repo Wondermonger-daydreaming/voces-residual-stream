@@ -102,6 +102,18 @@ stems** (clusters of 5 rung-items). Reported as 95% percentile CIs: web +0.40 [0
 positive) vs 1930 −0.04 [−0.14, 0.06] (24% positive). The intervals do not overlap; the 1930 interval straddles
 zero. `results/coercion/talkie_robustness_results.json`.
 
+**The recognition era-control (same checkpoints, the other paper).** The *recognition* study (`Its the Script,
+Not the Spell` v2) reuses the **same** `talkie-1930-13b-base` checkpoint and the **same** custom full-forward port
+(`src/coercion/build_talkie_probe.py`) to ask the era-pair question on the texture/namehood axis. 8-bit, single
+seed, L4. Result: H1 0.914/0.927 @L7 (era-invariant texture recognition), deep decider null (Greek p=0.83, Latin
+p=0.44, Mann–Whitney one-sided n=49) — recognition-without-representation holds inside the tradition's own era.
+Raw: `results/cross-family/talkie_recognition_1930_results.json`; reported in that paper's §4.6 and
+`results/cross-family/FINDINGS.md` §5. **Pending:** the matched `talkie-web-base` recognition control — its
+harness ran (REPS built, Greek 18.3 tok/vox) but the analysis was not captured this iteration; the web decider
+value is outstanding (near-certain null). The recognition conclusion rests on Talkie-1930 + the four modern
+families. *Note the two era-controls dissociate:* coercion §4c finds "native = distinct"; recognition finds
+"native = no difference."
+
 **Disclosed caveats (most-fragile first).**
 1. **Talkie is 8-bit with no fp16 confirmation** (13B fp16 ≈ 26 GB > the 24 GB L4). Treat magnitudes as
    quantization-sensitive; the robust claim is the *sign + CI separation*, not the point values.

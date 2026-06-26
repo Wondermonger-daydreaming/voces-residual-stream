@@ -106,6 +106,42 @@ co-equal significant drivers — fragmentation AND meaninglessness — with name
 holds *fragmented nonsense*; the voces are too recognizable (H1) to live all the way down there.
 *"It's the script, not the spell — and the depth is fragmented nonsense."*
 
+## 5. Native-tradition era-control (Talkie-1930) — recognition-without-representation is era-invariant
+The same pipeline on a model trained **inside the tradition's own era**. Talkie supplies a FLOP-matched,
+architecture-identical 13B **base** pair differing *only* in training era: `talkie-1930-13b-base` (pre-1931
+English) vs `talkie-web-13b-base` (modern web). The grimoire/PGM register is native to pre-1931 text, so this asks
+whether the central deflation depends on the tradition being *marginal* in training. It does not.
+
+| metric | **Talkie-1930-base** (pre-1931) | four modern families |
+|---|---|---|
+| H1 peak acc, Latin / Greek | **0.914 / 0.927** @L7 | 0.89–0.95 |
+| H1 beats surprisal-only by | **+0.41 / +0.40** | +0.30–+0.41 |
+| deep voces-specificity decider p, Greek / Latin | **0.83 / 0.44 (NULL)** | all null |
+| Greek tokens/vox (fragmentation) | **13.03** | 7.7–10.8 |
+
+- **H1 (texture recognition) replicates in the vintage model** (0.914/0.927), squarely in the modern range —
+  *texture-recognition is era-invariant.* A fifth tokenizer point, and the only one from a corpus where the
+  tradition is native.
+- **The decider stays NULL** (Greek p=0.83, Latin p=0.44; Mann–Whitney one-sided, n=49). The pre-1931 model does
+  **not** represent the voces as names. The romantic guess — that a period-native model would *know* the names —
+  is falsified. The deflation does not need the tradition to be marginal; it holds even when the model's century
+  *is* the tradition's.
+- **Talkie's English-only vocab shreds Greek hardest of all — 13.03 tok/vox**, the study's most extreme
+  fragmentation (beating Mistral's 10.76), and the deep-Greek signal is *still* not namehood (consistent with §3:
+  the depth holds fragmented nonsense, not the spell).
+- **Pending matched-pair confirmation.** The modern twin `talkie-web-base` is the obvious confirming control; its
+  recognition harness ran (REPS built, Greek tok/vox 18.3 — even higher) but the analysis was not captured this
+  iteration, so the web decider value is outstanding — a near-certain null on this evidence, not yet a number. The
+  conclusion rests on Talkie-1930 + the four modern families.
+- **Contrast with the coercion axis.** The *same* era-pair, read on the operator/coercion axis (sequel,
+  *Represented, Not Operative* §4c), lands the **opposite** way: "native = **distinct**" — the pre-1931 model
+  gives the grimoire register its own orthogonal axis where the modern twin assimilates it (non-overlapping
+  bootstrap CIs). On the recognition/namehood axis here, "native = **no difference**." Two era-pair controls, two
+  opposite shapes: native training reorganizes *coercion* and does nothing to *namehood*.
+- Provenance: 8-bit on a 24 GB GPU, single seed; Talkie is a custom non-HuggingFace architecture requiring a
+  custom full-forward port (`src/coercion/build_talkie_probe.py`, all-position logits + per-block residuals). Raw:
+  `talkie_recognition_1930_results.json`.
+
 ## Prediction scorecard (logged before the runs)
 - **Llama-3.1-8B (predicted before the run): Greek ≈ 9–10 tok/vox, deep gap ≈ Qwen's +0.016.** Actual: Greek
   **7.74** tok/vox (**missed low** — Llama's tiktoken fragments Greek *less* than predicted, near Gemma not Qwen),
